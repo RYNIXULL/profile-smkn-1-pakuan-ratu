@@ -1,0 +1,432 @@
+// Prisma Schema for SMKN 1 Pakuan Ratu Profil & CMS
+// Database provider: MySQL / MariaDB
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// -------------------------------------------------------------
+// 1. RBAC & USER AUTHENTICATION
+// -------------------------------------------------------------
+
+model Role {
+  id          String           @id @default(uuid())
+  name        String           @unique // SUPER_ADMIN, ADMIN_HUMAS, OPERATOR
+  displayName String           @map("display_name")
+  description String?          @db.Text
+  createdAt   DateTime         @default(now()) @map("created_at")
+  updatedAt   DateTime         @updatedAt @map("updated_at")
+
+  users       User[]
+  permissions RolePermission[]
+
+  @@map("roles")
+}
+
+model Permission {
+  id          String           @id @default(uuid())
+  action      String           // e.g. "news:create", "news:publish", "media:upload"
+  resource    String           // e.g. "news", "media", "users"
+  description String?          @db.Text
+  createdAt   DateTime         @default(now()) @map("created_at")
+
+  roles       RolePermission[]
+
+  @@unique([action, resource])
+  @@map("permissions")
+}
+
+model RolePermission {
+  roleId       String     @map("role_id")
+  permissionId String     @map("permission_id")
+
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@id([roleId, permissionId])
+  @@map("role_permissions")
+}
+
+model User {
+  id           String     @id @default(uuid())
+  roleId       String     @map("role_id")
+  name         String
+  email        String     @unique
+  passwordHash String     @map("password_hash")
+  avatarUrl    String?    @map("avatar_url")
+  isActive     Boolean    @default(true) @map("is_active")
+  lastLoginAt  DateTime?  @map("last_login_at")
+  createdAt    DateTime   @default(now()) @map("created_at")
+  updatedAt    DateTime   @updatedAt @map("updated_at")
+
+  role         Role       @relation(fields: [roleId], references: [id])
+  sessions     Session[]
+  auditLogs    AuditLog[]
+  newsCreated  News[]     @relation("NewsAuthor")
+  mediaCreated Media[]    @relation("MediaUploader")
+
+  @@index([roleId])
+  @@map("users")
+}
+
+model Session {
+  id           String    @id @default(uuid())
+  userId       String    @map("user_id")
+  token        String    @unique @db.VarChar(255)
+  ipAddress    String?   @map("ip_address")
+  userAgent    String?   @map("user_agent") @db.Text
+  expiresAt    DateTime  @map("expires_at")
+  createdAt    DateTime  @default(now()) @map("created_at")
+
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("sessions")
+}
+
+// -------------------------------------------------------------
+// 2. AUDIT LOGS & SYSTEM
+// -------------------------------------------------------------
+
+model AuditLog {
+  id         String   @id @default(uuid())
+  userId     String?  @map("user_id")
+  action     String   // LOGIN, LOGOUT, FAILED_LOGIN, CREATE, UPDATE, PUBLISH, DELETE, UPLOAD
+  resource   String   // news, events, media, users, settings
+  resourceId String?  @map("resource_id")
+  details    String?  @db.Text
+  ipAddress  String?  @map("ip_address")
+  userAgent  String?  @map("user_agent") @db.Text
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  user       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([action])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
+
+model Setting {
+  id        String   @id @default(uuid())
+  key       String   @unique
+  value     String   @db.Text
+  type      String   @default("string") // string, json, boolean, number
+  group     String   @default("general") // general, contact, social, seo
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("settings")
+}
+
+// -------------------------------------------------------------
+// 3. MEDIA STORAGE
+// -------------------------------------------------------------
+
+model Media {
+  id           String        @id @default(uuid())
+  uploaderId   String?       @map("uploader_id")
+  filename     String
+  originalName String        @map("original_name")
+  path         String        @db.VarChar(500)
+  url          String        @db.VarChar(500)
+  mimeType     String        @map("mime_type")
+  sizeBytes    Int           @map("size_bytes")
+  width        Int?
+  height       Int?
+  altText      String?       @map("alt_text")
+  caption      String?       @db.Text
+  createdAt    DateTime      @default(now()) @map("created_at")
+  updatedAt    DateTime      @updatedAt @map("updated_at")
+
+  uploader     User?         @relation("MediaUploader", fields: [uploaderId], references: [id], onDelete: SetNull)
+  galleryItems GalleryItem[]
+
+  @@index([uploaderId])
+  @@index([mimeType])
+  @@map("media")
+}
+
+// -------------------------------------------------------------
+// 4. NEWS & PUBLICATIONS
+// -------------------------------------------------------------
+
+enum NewsStatus {
+  DRAFT
+  REVIEW
+  PUBLISHED
+  ARCHIVED
+}
+
+model NewsCategory {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  slug        String   @unique
+  description String?  @db.Text
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  news        News[]
+
+  @@map("news_categories")
+}
+
+model NewsTag {
+  id        String        @id @default(uuid())
+  name      String        @unique
+  slug      String        @unique
+  createdAt DateTime      @default(now()) @map("created_at")
+
+  news      NewsTagMap[]
+
+  @@map("news_tags")
+}
+
+model News {
+  id           String       @id @default(uuid())
+  categoryId   String       @map("category_id")
+  authorId     String       @map("author_id")
+  title        String
+  slug         String       @unique
+  summary      String       @db.Text
+  content      String       @db.LongText
+  thumbnailUrl String?      @map("thumbnail_url") @db.VarChar(500)
+  status       NewsStatus   @default(DRAFT)
+  publishedAt  DateTime?    @map("published_at")
+  isFeatured   Boolean      @default(false) @map("is_featured")
+  viewsCount   Int          @default(0) @map("views_count")
+  metaTitle    String?      @map("meta_title")
+  metaDesc     String?      @map("meta_desc") @db.Text
+  createdAt    DateTime     @default(now()) @map("created_at")
+  updatedAt    DateTime     @updatedAt @map("updated_at")
+
+  category     NewsCategory @relation(fields: [categoryId], references: [id])
+  author       User         @relation("NewsAuthor", fields: [authorId], references: [id])
+  tags         NewsTagMap[]
+
+  @@index([categoryId])
+  @@index([authorId])
+  @@index([status])
+  @@index([publishedAt])
+  @@map("news")
+}
+
+model NewsTagMap {
+  newsId String @map("news_id")
+  tagId  String @map("tag_id")
+
+  news   News    @relation(fields: [newsId], references: [id], onDelete: Cascade)
+  tag    NewsTag @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([newsId, tagId])
+  @@map("news_tags_map")
+}
+
+// -------------------------------------------------------------
+// 5. ANNOUNCEMENTS & EVENTS
+// -------------------------------------------------------------
+
+model Announcement {
+  id          String    @id @default(uuid())
+  title       String
+  slug        String    @unique
+  content     String    @db.Text
+  attachment  String?   @db.VarChar(500)
+  isUrgent    Boolean   @default(false) @map("is_urgent")
+  isActive    Boolean   @default(true) @map("is_active")
+  publishedAt DateTime  @default(now()) @map("published_at")
+  expiresAt   DateTime? @map("expires_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  @@index([isActive])
+  @@index([publishedAt])
+  @@map("announcements")
+}
+
+model Event {
+  id          String   @id @default(uuid())
+  title       String
+  slug        String   @unique
+  description String   @db.Text
+  location    String
+  startDate   DateTime @map("start_date")
+  endDate     DateTime? @map("end_date")
+  status      String   @default("UPCOMING") // UPCOMING, ONGOING, COMPLETED, CANCELLED
+  imageUrl    String?  @map("image_url") @db.VarChar(500)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@index([startDate])
+  @@index([status])
+  @@map("events")
+}
+
+// -------------------------------------------------------------
+// 6. SCHOOL PROFILE & ACADEMICS
+// -------------------------------------------------------------
+
+model Program {
+  id               String       @id @default(uuid())
+  name             String
+  slug             String       @unique // pertanian, peternakan, akuntansi-bisnis-digital, dkv, tbsm
+  tagline          String?
+  shortDesc        String       @map("short_desc") @db.Text
+  fullDesc         String       @map("full_desc") @db.LongText
+  competencies     String       @db.LongText // JSON array or formatted markdown
+  careerProspects  String       @map("career_prospects") @db.LongText // JSON array or text
+  facilities       String       @db.LongText // JSON array or text
+  accentColor      String?      @default("#10B981") @map("accent_color")
+  iconName         String?      @default("BookOpen") @map("icon_name")
+  imageUrl         String?      @map("image_url") @db.VarChar(500)
+  orderIndex       Int          @default(0) @map("order_index")
+  createdAt        DateTime     @default(now()) @map("created_at")
+  updatedAt        DateTime     @updatedAt @map("updated_at")
+
+  teachers         Teacher[]
+
+  @@map("programs")
+}
+
+model Teacher {
+  id          String    @id @default(uuid())
+  programId   String?   @map("program_id")
+  name        String
+  nip         String?
+  position    String    // e.g. "Kepala Sekolah", "Guru Produktif DKV", "Waka Kurikulum"
+  subject     String?   // Mata Pelajaran / Bidang
+  bio         String?   @db.Text
+  photoUrl    String?   @map("photo_url") @db.VarChar(500)
+  orderIndex  Int       @default(0) @map("order_index")
+  isStaff     Boolean   @default(false) @map("is_staff") // true for Tenaga Kependidikan
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  program     Program?  @relation(fields: [programId], references: [id], onDelete: SetNull)
+
+  @@index([programId])
+  @@map("teachers")
+}
+
+model Facility {
+  id          String   @id @default(uuid())
+  name        String
+  category    String   // Lab & Bengkel, Ruang Belajar, Olahraga, Penunjang
+  description String   @db.Text
+  location    String?
+  imageUrl    String?  @map("image_url") @db.VarChar(500)
+  orderIndex  Int      @default(0) @map("order_index")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("facilities")
+}
+
+model Achievement {
+  id          String   @id @default(uuid())
+  title       String
+  studentName String   @map("student_name")
+  competition String
+  level       String   // Kabupaten, Provinsi, Nasional, Internasional
+  category    String   // Akademik, Vokasi, Olahraga, Seni
+  year        Int
+  description String?  @db.Text
+  photoUrl    String?  @map("photo_url") @db.VarChar(500)
+  isFeatured  Boolean  @default(false) @map("is_featured")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@index([year])
+  @@index([level])
+  @@map("achievements")
+}
+
+// -------------------------------------------------------------
+// 7. GALLERIES
+// -------------------------------------------------------------
+
+model Gallery {
+  id          String        @id @default(uuid())
+  title       String
+  slug        String        @unique
+  description String?       @db.Text
+  category    String        @default("Kegiatan") // Kegiatan, Prestasi, Fasilitas, Praktik
+  coverUrl    String?       @map("cover_url") @db.VarChar(500)
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
+
+  items       GalleryItem[]
+
+  @@map("galleries")
+}
+
+model GalleryItem {
+  id         String   @id @default(uuid())
+  galleryId  String   @map("gallery_id")
+  mediaId    String   @map("media_id")
+  caption    String?  @db.Text
+  orderIndex Int      @default(0) @map("order_index")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  gallery    Gallery  @relation(fields: [galleryId], references: [id], onDelete: Cascade)
+  media      Media    @relation(fields: [mediaId], references: [id], onDelete: Cascade)
+
+  @@index([galleryId])
+  @@index([mediaId])
+  @@map("gallery_items")
+}
+
+// -------------------------------------------------------------
+// 8. STATIC PAGES & HOMEPAGE SECTIONS
+// -------------------------------------------------------------
+
+model Page {
+  id        String   @id @default(uuid())
+  title     String
+  slug      String   @unique // sejarah, visi-misi, sambutan-kepala-sekolah, struktur-organisasi
+  content   String   @db.LongText
+  metaTitle String?  @map("meta_title")
+  metaDesc  String?  @map("meta_desc") @db.Text
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("pages")
+}
+
+model HomepageSection {
+  id         String   @id @default(uuid())
+  sectionKey String   @unique @map("section_key") // hero, statistics, programs, storytelling, activities, achievements, news, events, gallery, cta
+  title      String
+  subtitle   String?  @db.Text
+  content    String?  @db.LongText // JSON containing customizable details like hero buttons, statistics cards
+  isVisible  Boolean  @default(true) @map("is_visible")
+  orderIndex Int      @default(0) @map("order_index")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  @@map("homepage_sections")
+}
+
+// -------------------------------------------------------------
+// 9. INBOX / CONTACT MESSAGES
+// -------------------------------------------------------------
+
+model ContactMessage {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  phone     String?
+  subject   String
+  message   String   @db.Text
+  isRead    Boolean  @default(false) @map("is_read")
+  ipAddress String?  @map("ip_address")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([isRead])
+  @@index([createdAt])
+  @@map("contact_messages")
+}
