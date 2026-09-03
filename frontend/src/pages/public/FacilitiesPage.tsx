@@ -82,7 +82,7 @@ export const FacilitiesPage: React.FC = () => {
                   <img
                     src={
                       item.imageUrl ||
-                      'https://images.unsplash.com/photo-1581092335397-9583fe92d232?q=80&w=800&auto=format&fit=crop'
+                      '/images/campus.jpg'
                     }
                     alt={item.name}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"

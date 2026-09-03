@@ -13,6 +13,14 @@ const programIcons: Record<string, React.ReactNode> = {
   tbsm: <Wrench className="w-8 h-8 text-rose-600" />,
 };
 
+const programImages: Record<string, string> = {
+  pertanian: '/images/pertanian.jpg',
+  peternakan: '/images/peternakan.jpg',
+  'akuntansi-bisnis-digital': '/images/akuntansi.jpg',
+  dkv: '/images/dkv.jpg',
+  tbsm: '/images/tbsm.jpg',
+};
+
 export const ProgramsPage: React.FC = () => {
   const { data: programs, isLoading } = useQuery<ProgramItem[]>({
     queryKey: ['publicProgramsList'],
@@ -51,7 +59,8 @@ export const ProgramsPage: React.FC = () => {
                   <img
                     src={
                       prog.imageUrl ||
-                      'https://images.unsplash.com/photo-1581092335397-9583fe92d232?q=80&w=800&auto=format&fit=crop'
+                      programImages[prog.slug] ||
+                      '/images/campus.jpg'
                     }
                     alt={prog.name}
                     className="w-full h-full object-cover opacity-85 group-hover:scale-105 transition-transform duration-500"

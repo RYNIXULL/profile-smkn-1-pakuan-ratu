@@ -25,6 +25,14 @@ const programIcons: Record<string, React.ReactNode> = {
   tbsm: <Wrench className="w-8 h-8 text-rose-600" />,
 };
 
+const programImages: Record<string, string> = {
+  pertanian: '/images/pertanian.jpg',
+  peternakan: '/images/peternakan.jpg',
+  'akuntansi-bisnis-digital': '/images/akuntansi.jpg',
+  dkv: '/images/dkv.jpg',
+  tbsm: '/images/tbsm.jpg',
+};
+
 export const ProgramDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
 
@@ -85,6 +93,14 @@ export const ProgramDetailPage: React.FC = () => {
 
       {/* Hero Detail Card */}
       <div className="relative rounded-3xl overflow-hidden bg-forest-900 text-white p-8 sm:p-14 shadow-xl">
+        <div className="absolute inset-0 z-0">
+          <img
+            src={program.imageUrl || programImages[program.slug] || '/images/campus.jpg'}
+            alt={program.name}
+            className="w-full h-full object-cover opacity-25 scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-forest-950 via-forest-950/90 to-forest-900/60" />
+        </div>
         <div className="relative z-10 max-w-3xl space-y-6">
           <div className="inline-flex items-center gap-2 p-3 rounded-2xl bg-white/90 shadow-md">
             {programIcons[program.slug] || <Sprout className="w-6 h-6 text-forest-800" />}
@@ -190,7 +206,7 @@ export const ProgramDetailPage: React.FC = () => {
                   <img
                     src={
                       tch.photoUrl ||
-                      'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop'
+                      '/images/kepsek.jpg'
                     }
                     alt={tch.name}
                     className="w-full h-full object-cover"

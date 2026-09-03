@@ -42,7 +42,7 @@ export const GalleriesPage: React.FC = () => {
             const coverImage =
               album.coverUrl ||
               album.items?.[0]?.media?.url ||
-              'https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=600&auto=format&fit=crop';
+              '/images/campus.jpg';
 
             return (
               <Link

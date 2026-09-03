@@ -90,7 +90,7 @@ export const AchievementsPage: React.FC = () => {
                   <img
                     src={
                       item.photoUrl ||
-                      'https://images.unsplash.com/photo-1578269174936-2709b6aeb913?q=80&w=600&auto=format&fit=crop'
+                      '/images/dkv.jpg'
                     }
                     alt={item.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"

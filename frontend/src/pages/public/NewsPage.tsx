@@ -142,7 +142,7 @@ export const NewsPage: React.FC = () => {
                   <img
                     src={
                       item.thumbnailUrl ||
-                      'https://images.unsplash.com/photo-1586771107445-d3ca888129ff?q=80&w=600&auto=format&fit=crop'
+                      '/images/pertanian.jpg'
                     }
                     alt={item.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"

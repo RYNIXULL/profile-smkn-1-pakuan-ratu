@@ -95,6 +95,7 @@ async function main() {
       ]),
       accentColor: '#10B981',
       iconName: 'Sprout',
+      imageUrl: '/images/pertanian.jpg',
       orderIndex: 1,
     },
     {
@@ -126,6 +127,7 @@ async function main() {
       ]),
       accentColor: '#F59E0B',
       iconName: 'Beef',
+      imageUrl: '/images/peternakan.jpg',
       orderIndex: 2,
     },
     {
@@ -157,6 +159,7 @@ async function main() {
       ]),
       accentColor: '#3B82F6',
       iconName: 'TrendingUp',
+      imageUrl: '/images/akuntansi.jpg',
       orderIndex: 3,
     },
     {
@@ -188,6 +191,7 @@ async function main() {
       ]),
       accentColor: '#8B5CF6',
       iconName: 'Palette',
+      imageUrl: '/images/dkv.jpg',
       orderIndex: 4,
     },
     {
@@ -219,6 +223,7 @@ async function main() {
       ]),
       accentColor: '#EF4444',
       iconName: 'Wrench',
+      imageUrl: '/images/tbsm.jpg',
       orderIndex: 5,
     },
   ];
@@ -265,7 +270,7 @@ async function main() {
         <blockquote>"Kami mendidik siswa tidak hanya mencangkul tanah, tetapi memahami manajemen nutrisi tanaman dan teknologi smart farming modern sehingga mereka siap menjadi agropreneur mandiri," ujar Kepala Program Keahlian Pertanian.</blockquote>
         <p>Seluruh hasil panen telah dipesan oleh jejaring supermarket lokal dan pasar komersial di wilayah Way Kanan dan sekitarnya, dengan omzet penjualan yang dialokasikan kembali untuk pengembangan modal usaha wirausaha siswa.</p>
       `,
-      thumbnailUrl: 'https://images.unsplash.com/photo-1586771107445-d3ca888129ff?q=80&w=800&auto=format&fit=crop',
+      thumbnailUrl: '/images/pertanian.jpg',
       status: NewsStatus.PUBLISHED,
       isFeatured: true,
       publishedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
@@ -281,7 +286,7 @@ async function main() {
         <p>Karya yang diusung mengangkat perpaduan kearifan motif lokal Way Kanan dengan estetika desain kontemporer modern yang diaplikasikan pada kemasan produk UMKM kopi dan lada.</p>
         <p>Dewan juri mengapresiasi ketepatan riset audiens, pemilihan tipografi, dan konsistensi visual identity yang dinilai sangat matang dan siap pakai oleh pelaku industri.</p>
       `,
-      thumbnailUrl: 'https://images.unsplash.com/photo-1626785774573-4b799315345d?q=80&w=800&auto=format&fit=crop',
+      thumbnailUrl: '/images/dkv.jpg',
       status: NewsStatus.PUBLISHED,
       isFeatured: true,
       publishedAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000),
@@ -296,7 +301,7 @@ async function main() {
         <p>Siswa Program Keahlian Teknik dan Bisnis Sepeda Motor (TBSM) menggelar bakti sosial servis motor gratis bagi masyarakat di lingkungan kecamatan Pakuan Ratu.</p>
         <p>Kegiatan ini didampingi langsung oleh mekanik instruktur bersertifikasi industri. Pemeriksaan mencakup tune up sistem injeksi, pengecekan busi, sistem rem, tegangan rantai, dan lampu penerangan.</p>
       `,
-      thumbnailUrl: 'https://images.unsplash.com/photo-1486006920555-c77dce18193b?q=80&w=800&auto=format&fit=crop',
+      thumbnailUrl: '/images/tbsm.jpg',
       status: NewsStatus.PUBLISHED,
       isFeatured: false,
       publishedAt: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000),
@@ -349,7 +354,7 @@ async function main() {
       startDate: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000),
       endDate: new Date(Date.now() + 12 * 24 * 60 * 60 * 1000),
       status: 'UPCOMING',
-      imageUrl: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=800&auto=format&fit=crop',
+      imageUrl: '/images/campus.jpg',
     },
     {
       title: 'Workshop Digital Marketing & E-Commerce untuk Siswa Akuntansi',
@@ -359,7 +364,7 @@ async function main() {
       startDate: new Date(Date.now() + 18 * 24 * 60 * 60 * 1000),
       endDate: new Date(Date.now() + 19 * 24 * 60 * 60 * 1000),
       status: 'UPCOMING',
-      imageUrl: 'https://images.unsplash.com/photo-1531403009284-440f080d1e12?q=80&w=800&auto=format&fit=crop',
+      imageUrl: '/images/akuntansi.jpg',
     },
   ];
 
@@ -381,7 +386,7 @@ async function main() {
       category: 'Vokasi',
       year: 2026,
       description: 'Menampilkan desain sistem identitas visual komersial terbaik dengan penilaian fungsionalitas dan estetika tinggi.',
-      photoUrl: 'https://images.unsplash.com/photo-1578269174936-2709b6aeb913?q=80&w=800&auto=format&fit=crop',
+      photoUrl: '/images/dkv.jpg',
       isFeatured: true,
     },
     {
@@ -392,7 +397,7 @@ async function main() {
       category: 'Akademik',
       year: 2025,
       description: 'Mengembangkan sistem pengairan hidroponik otomatis berbasis mikroprosesor surya murah untuk lahan kering.',
-      photoUrl: 'https://images.unsplash.com/photo-1567427017947-545c5f8d16ad?q=80&w=800&auto=format&fit=crop',
+      photoUrl: '/images/pertanian.jpg',
       isFeatured: true,
     },
   ];
@@ -409,11 +414,14 @@ async function main() {
       title: 'Sejarah Singkat SMKN 1 Pakuan Ratu',
       slug: 'sejarah',
       content: `
-        <p>SMKN 1 Pakuan Ratu didirikan sebagai wujud komitmen menghadirkan pendidikan vokasi unggulan yang berpijak pada potensi agraris dan kebutuhan industri di Way Kanan, Lampung.</p>
-        <p>Berawal dari semangat mencetak generasi muda yang mandiri, terampil, dan berkarakter, sekolah ini terus berkembang dengan melengkapi fasilitas praktik berstandar industri pada lima program keahlian: Pertanian, Peternakan, Akuntansi & Bisnis Digital, Desain Komunikasi Visual, dan Teknik & Bisnis Sepeda Motor.</p>
-        <p>Kini, SMKN 1 Pakuan Ratu menjadi salah satu pusat keunggulan pendidikan kejuruan yang diakui atas kolaborasi eratnya dengan dunia usaha dan dunia industri (DUDI).</p>
+        <div class="mb-6 rounded-2xl overflow-hidden shadow-md">
+          <img src="/images/campus.jpg" alt="Gedung Kampus SMKN 1 Pakuan Ratu" class="w-full h-72 sm:h-96 object-cover" />
+        </div>
+        <p>SMKN 1 Pakuan Ratu didirikan sebagai wujud komitmen luhur pemerintah dan masyarakat dalam menghadirkan pendidikan kejuruan bermutu tinggi yang berpijak pada potensi agraris dan kebutuhan industri daerah di Way Kanan, Lampung.</p>
+        <p>Berawal dari semangat mencetak generasi muda yang mandiri, terampil, dan berkarakter, sekolah ini terus bertransformasi dengan melengkapi fasilitas laboratorium berstandar industri pada lima program keahlian unggulan: Agribisnis Tanaman, Agribisnis Ternak, Akuntansi & Bisnis Digital, Desain Komunikasi Visual, dan Teknik & Bisnis Sepeda Motor.</p>
+        <p>Kini, SMKN 1 Pakuan Ratu berdiri kokoh sebagai salah satu Pusat Keunggulan Vokasi yang diakui luas atas keberhasilan kemitraan strategisnya dengan dunia usaha dan industri terkemuka.</p>
       `,
-      metaTitle: 'Sejarah SMKN 1 Pakuan Ratu - Berakar pada Potensi, Tumbuh ke Masa Depan',
+      metaTitle: 'Sejarah SMKN 1 Pakuan Ratu - Berakar Kuat, Tumbuh Hebat',
       metaDesc: 'Sejarah perjalanan berdirinya SMK Negeri 1 Pakuan Ratu dalam mengembangkan pendidikan vokasi berkualitas di Way Kanan.',
     },
     {
@@ -438,8 +446,16 @@ async function main() {
       title: 'Sambutan Kepala Sekolah',
       slug: 'sambutan-kepala-sekolah',
       content: `
+        <div class="flex flex-col md:flex-row gap-6 items-start mb-6 p-4 rounded-2xl bg-forest-50/60 border border-forest-100">
+          <img src="/images/kepsek.jpg" alt="Drs. H. Mulyono, M.Pd. - Kepala Sekolah" class="w-44 h-56 rounded-xl object-cover shadow-sm flex-shrink-0" />
+          <div class="space-y-1">
+            <h3 class="text-lg font-bold text-gray-900">Drs. H. Mulyono, M.Pd.</h3>
+            <p class="text-xs font-semibold text-emerald-800">Kepala Sekolah SMKN 1 Pakuan Ratu</p>
+            <p class="text-xs text-gray-600 italic pt-2">"Pendidikan vokasi adalah jembatan emas yang menghubungkan bakat anak negeri dengan kemajuan peradaban dan kemandirian bangsa."</p>
+          </div>
+        </div>
         <p><em>Assalamu’alaikum Warahmatullahi Wabarakatuh, Salam Sejahtera untuk Kita Semua.</em></p>
-        <p>Puji syukur kita panjatkan ke hadirat Tuhan Yang Maha Esa atas karunia dan rahmat-Nya. Selamat datang di laman resmi portal digital SMKN 1 Pakuan Ratu.</p>
+        <p>Puji syukur kita panjatkan ke hadirat Tuhan Yang Maha Esa atas karunia dan rahmat-Nya. Selamat datang di portal digital resmi SMKN 1 Pakuan Ratu.</p>
         <p>Dunia pendidikan saat ini bergerak sangat dinamis seiring percepatan transformasi teknologi dan kebutuhan industri global. Di SMKN 1 Pakuan Ratu, kami memegang teguh filosofi <strong>"Berakar pada Potensi, Tumbuh Menuju Masa Depan"</strong>. Kami meyakini bahwa setiap anak memiliki bakat unik yang jika diasah melalui kejuruan yang tepat akan melahirkan karya luar biasa.</p>
         <p>Kami mengajak seluruh orang tua, calon siswa, alumni, dan mitra industri untuk bersama-sama bergandeng tangan memajukan pendidikan vokasi demi masa depan generasi penerus bangsa yang bermartabat.</p>
         <p><em>Wassalamu’alaikum Warahmatullahi Wabarakatuh.</em></p>
@@ -478,14 +494,14 @@ async function main() {
   const homepageSections = [
     {
       sectionKey: 'hero',
-      title: 'Tumbuh dari Akar. Melangkah ke Masa Depan.',
-      subtitle: 'SMKN 1 Pakuan Ratu membentuk generasi vokasi unggul yang siap kerja, berkarakter mulia, menguasai teknologi, dan mandiri berwirausaha.',
+      title: 'Berakar Kuat, Tumbuh Hebat',
+      subtitle: 'Pusat Keunggulan Pendidikan Vokasi Kabupaten Way Kanan membina generasi muda yang terampil, berkarakter mulia, dan siap berkarya nyata di dunia industri modern.',
       content: JSON.stringify({
         primaryCtaText: 'Jelajahi Sekolah',
-        primaryCtaLink: '#profil-identitas',
-        secondaryCtaText: 'Program Keahlian',
+        primaryCtaLink: '#identitas-sekolah',
+        secondaryCtaText: '5 Program Keahlian',
         secondaryCtaLink: '/program-keahlian',
-        statsTag: 'Sekolah Pusat Keunggulan Vokasi Daerah',
+        statsTag: 'Pusat Keunggulan Pendidikan Vokasi Kabupaten Way Kanan',
       }),
       isVisible: true,
       orderIndex: 1,
@@ -511,6 +527,122 @@ async function main() {
       update: hs,
       create: hs,
     });
+  }
+
+  // 11. Teachers & Staff Seed
+  const teachersData = [
+    {
+      name: 'Drs. H. Mulyono, M.Pd.',
+      nip: '19680512 199403 1 004',
+      position: 'Kepala Sekolah',
+      subject: 'Manajemen Pendidikan Vokasi',
+      photoUrl: '/images/kepsek.jpg',
+      isStaff: false,
+    },
+    {
+      name: 'Ir. Hendra Kusuma, S.Pt.',
+      nip: '19750821 200212 1 002',
+      position: 'Kepala Program Keahlian Peternakan',
+      subject: 'Agribisnis Ternak Ruminansia & Unggas',
+      photoUrl: '/images/peternakan.jpg',
+      isStaff: false,
+    },
+    {
+      name: 'Siti Rahmawati, S.P., M.Si.',
+      nip: '19820315 200801 2 011',
+      position: 'Kepala Program Keahlian Pertanian',
+      subject: 'Smart Farming & Agribisnis Tanaman',
+      photoUrl: '/images/pertanian.jpg',
+      isStaff: false,
+    },
+    {
+      name: 'Budi Prasetyo, S.Sn.',
+      nip: '19881109 201402 1 003',
+      position: 'Kepala Program Keahlian DKV',
+      subject: 'Desain Komunikasi Visual & Multimedia',
+      photoUrl: '/images/dkv.jpg',
+      isStaff: false,
+    },
+    {
+      name: 'Yudi Hermanto, S.T.',
+      nip: '19860402 201101 1 008',
+      position: 'Kepala Program Keahlian TBSM',
+      subject: 'Teknik Sepeda Motor & Kelistrikan Otomotif',
+      photoUrl: '/images/tbsm.jpg',
+      isStaff: false,
+    },
+    {
+      name: 'Dewi Lestari, S.E., M.Ak.',
+      nip: '19890724 201503 2 005',
+      position: 'Kepala Program Keahlian Akuntansi',
+      subject: 'Akuntansi Keuangan & Bisnis Digital',
+      photoUrl: '/images/akuntansi.jpg',
+      isStaff: false,
+    },
+  ];
+
+  for (const t of teachersData) {
+    const existing = await prisma.teacher.findFirst({ where: { name: t.name } });
+    if (existing) {
+      await prisma.teacher.update({ where: { id: existing.id }, data: t });
+    } else {
+      await prisma.teacher.create({ data: t });
+    }
+  }
+
+  // 12. Facilities Seed
+  const facilitiesData = [
+    {
+      name: 'Smart Greenhouse Hortikultura Vokasi',
+      category: 'Lab & Bengkel',
+      description: 'Greenhouse modern dengan sistem kontrol nutrisi hidroponik otomatis untuk praktik budidaya tanaman hortikultura bernilai tinggi.',
+      location: 'Area Lahan Praktik Pertanian',
+      imageUrl: '/images/pertanian.jpg',
+    },
+    {
+      name: 'Kandang Praktik Peternakan Terpadu',
+      category: 'Lab & Bengkel',
+      description: 'Fasilitas pemeliharaan ternak ruminansia dan unggas model closed house serta unit pengolahan pakan ternak mandiri.',
+      location: 'Kompleks Teaching Factory Peternakan',
+      imageUrl: '/images/peternakan.jpg',
+    },
+    {
+      name: 'Studio Multimedia & Desain DKV',
+      category: 'Lab & Bengkel',
+      description: 'Studio berpendingin udara yang dilengkapi komputer spek tinggi, drawing tablet, kamera sinematografi, dan lighting studio.',
+      location: 'Gedung Vokasi Lantai 2',
+      imageUrl: '/images/dkv.jpg',
+    },
+    {
+      name: 'Bengkel Resmi Sepeda Motor (TBSM)',
+      category: 'Lab & Bengkel',
+      description: 'Bengkel standar APM dengan bike lift hidrolik, diagnostic tools EFI, dan special service tools lengkap.',
+      location: 'Gedung Bengkel Otomotif',
+      imageUrl: '/images/tbsm.jpg',
+    },
+    {
+      name: 'Laboratorium Komputer Akuntansi & Bank Mini',
+      category: 'Ruang Belajar',
+      description: 'Laboratorium komputer terkoneksi software akuntansi industri dan unit simulasi transaksi perbankan sekolah.',
+      location: 'Gedung Teori Lantai 1',
+      imageUrl: '/images/akuntansi.jpg',
+    },
+    {
+      name: 'Gedung Kampus Utama & Lapangan Upacara',
+      category: 'Penunjang',
+      description: 'Gedung representatif bernuansa hijau dengan halaman upacara luas, tiang bendera, dan taman asri berwawasan lingkungan.',
+      location: 'Plaza Utama SMKN 1 Pakuan Ratu',
+      imageUrl: '/images/campus.jpg',
+    },
+  ];
+
+  for (const f of facilitiesData) {
+    const existing = await prisma.facility.findFirst({ where: { name: f.name } });
+    if (existing) {
+      await prisma.facility.update({ where: { id: existing.id }, data: f });
+    } else {
+      await prisma.facility.create({ data: f });
+    }
   }
 
   // 11. General Settings

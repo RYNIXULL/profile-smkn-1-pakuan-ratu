@@ -9,7 +9,6 @@ import {
   TrendingUp,
   Palette,
   Wrench,
-  ShieldCheck,
   Phone,
   BookOpen,
   Award,
@@ -18,7 +17,6 @@ import {
   Building2,
   Users,
 } from 'lucide-react';
-import { useAuth } from '../../stores/authStore';
 
 export const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -26,7 +24,6 @@ export const Navbar: React.FC = () => {
   const [profilDropdown, setProfilDropdown] = useState(false);
   const [programDropdown, setProgramDropdown] = useState(false);
   const location = useLocation();
-  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -245,17 +242,6 @@ export const Navbar: React.FC = () => {
             </Link>
           </nav>
 
-          {/* Action Button: CMS Admin Portal */}
-          <div className="hidden sm:flex items-center gap-3">
-            <Link
-              to={isAuthenticated ? '/admin' : '/admin/login'}
-              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-forest-800 hover:bg-forest-900 text-white text-xs font-semibold shadow-sm transition-all hover:shadow-md"
-            >
-              <ShieldCheck className="w-4 h-4 text-emerald-300" />
-              <span>{isAuthenticated ? 'Panel CMS' : 'Portal Admin'}</span>
-            </Link>
-          </div>
-
           {/* Mobile menu toggle */}
           <div className="flex xl:hidden items-center gap-2">
             <button
@@ -335,16 +321,6 @@ export const Navbar: React.FC = () => {
                 </Link>
                 <Link to="/kontak" className="px-3 py-2 hover:bg-forest-50 rounded-lg col-span-2">
                   Kontak & Lokasi
-                </Link>
-              </div>
-
-              <div className="border-t border-gray-100 mt-2 pt-2">
-                <Link
-                  to={isAuthenticated ? '/admin' : '/admin/login'}
-                  className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-forest-800 text-white text-xs font-semibold shadow-sm"
-                >
-                  <ShieldCheck className="w-4 h-4 text-emerald-300" />
-                  <span>{isAuthenticated ? 'Buka Panel CMS' : 'Login Admin / Staf'}</span>
                 </Link>
               </div>
             </div>

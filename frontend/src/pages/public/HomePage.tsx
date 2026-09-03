@@ -24,7 +24,6 @@ import {
   ChevronRight,
   Compass,
   CheckCircle2,
-  Sparkle,
   Image as ImageIcon,
 } from 'lucide-react';
 import { formatDate, truncateText } from '../../lib/utils';
@@ -36,6 +35,14 @@ const programIcons: Record<string, React.ReactNode> = {
   'akuntansi-bisnis-digital': <TrendingUp className="w-6 h-6 text-blue-600" />,
   dkv: <Palette className="w-6 h-6 text-purple-600" />,
   tbsm: <Wrench className="w-6 h-6 text-rose-600" />,
+};
+
+const programImages: Record<string, string> = {
+  pertanian: '/images/pertanian.jpg',
+  peternakan: '/images/peternakan.jpg',
+  'akuntansi-bisnis-digital': '/images/akuntansi.jpg',
+  dkv: '/images/dkv.jpg',
+  tbsm: '/images/tbsm.jpg',
 };
 
 export const HomePage: React.FC = () => {
@@ -83,9 +90,9 @@ export const HomePage: React.FC = () => {
         {/* Background Image Overlay */}
         <div className="absolute inset-0 z-0">
           <img
-            src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=1920&auto=format&fit=crop"
-            alt="Suasana Pendidikan Vokasi SMKN 1 Pakuan Ratu"
-            className="w-full h-full object-cover opacity-25 scale-105 transform animate-pulse duration-[10000ms]"
+            src="/images/hero_school.jpg"
+            alt="Dokumentasi Siswa SMKN 1 Pakuan Ratu"
+            className="w-full h-full object-cover opacity-35 scale-105"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-forest-950 via-forest-950/80 to-forest-900/40" />
         </div>
@@ -107,7 +114,7 @@ export const HomePage: React.FC = () => {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="editorial-title text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white leading-[1.1]"
           >
-            {heroSection?.title || 'Tumbuh dari Akar. Melangkah ke Masa Depan.'}
+            {heroSection?.title || 'Berakar Kuat, Tumbuh Hebat'}
           </motion.h1>
 
           <motion.p
@@ -176,8 +183,8 @@ export const HomePage: React.FC = () => {
           <div className="lg:col-span-6">
             <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-forest-100 bg-forest-900 group">
               <img
-                src="https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=1000&auto=format&fit=crop"
-                alt="Kegiatan Belajar Mengajar SMKN 1 Pakuan Ratu"
+                src="/images/campus.jpg"
+                alt="Lingkungan Kampus Hijau SMKN 1 Pakuan Ratu"
                 className="w-full h-[420px] object-cover opacity-90 group-hover:scale-105 transition-transform duration-700"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-forest-950/90 via-forest-950/40 to-transparent p-8 flex flex-col justify-end text-white">
@@ -271,7 +278,8 @@ export const HomePage: React.FC = () => {
                 <img
                   src={
                     prog.imageUrl ||
-                    'https://images.unsplash.com/photo-1581092335397-9583fe92d232?q=80&w=800&auto=format&fit=crop'
+                    programImages[prog.slug] ||
+                    '/images/campus.jpg'
                   }
                   alt={prog.name}
                   className="w-full h-full object-cover opacity-80 group-hover:scale-105 group-hover:opacity-90 transition-all duration-500"
@@ -387,7 +395,7 @@ export const HomePage: React.FC = () => {
                 <img
                   src={
                     ach.photoUrl ||
-                    'https://images.unsplash.com/photo-1578269174936-2709b6aeb913?q=80&w=400&auto=format&fit=crop'
+                    '/images/dkv.jpg'
                   }
                   alt={ach.title}
                   className="w-full h-full object-cover"
@@ -455,7 +463,7 @@ export const HomePage: React.FC = () => {
                     <img
                       src={
                         item.thumbnailUrl ||
-                        'https://images.unsplash.com/photo-1586771107445-d3ca888129ff?q=80&w=400&auto=format&fit=crop'
+                        '/images/pertanian.jpg'
                       }
                       alt={item.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
@@ -559,10 +567,10 @@ export const HomePage: React.FC = () => {
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
           {[
-            { title: 'Praktik Hidroponik Greenhouse', img: 'https://images.unsplash.com/photo-1586771107445-d3ca888129ff?q=80&w=600&auto=format&fit=crop' },
-            { title: 'Studio Komputer DKV & Animasi', img: 'https://images.unsplash.com/photo-1581092335397-9583fe92d232?q=80&w=600&auto=format&fit=crop' },
-            { title: 'Bengkel Servis Sepeda Motor', img: 'https://images.unsplash.com/photo-1486006920555-c77dce18193b?q=80&w=600&auto=format&fit=crop' },
-            { title: 'Simulasi Bank Mini Akuntansi', img: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=600&auto=format&fit=crop' },
+            { title: 'Praktik Hidroponik Greenhouse Pertanian', img: '/images/pertanian.jpg' },
+            { title: 'Studio Komputer DKV & Produksi Kreatif', img: '/images/dkv.jpg' },
+            { title: 'Bengkel Servis Sepeda Motor TBSM', img: '/images/tbsm.jpg' },
+            { title: 'Laboratorium Komputer Akuntansi & Bisnis', img: '/images/akuntansi.jpg' },
           ].map((item, idx) => (
             <div
               key={idx}
