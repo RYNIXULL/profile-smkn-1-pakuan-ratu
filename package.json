@@ -1,0 +1,23 @@
+{
+  "name": "smkn1-pakuan-ratu",
+  "version": "1.0.0",
+  "description": "Platform Profil Resmi & CMS Terintegrasi SMKN 1 Pakuan Ratu",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "build": "npm --prefix backend run build && npm --prefix frontend run build",
+    "test": "npm --prefix backend run test && npm --prefix frontend run test",
+    "lint": "npm --prefix backend run lint && npm --prefix frontend run lint"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  },
+  "author": "SMKN 1 Pakuan Ratu",
+  "license": "UNLICENSED"
+}
