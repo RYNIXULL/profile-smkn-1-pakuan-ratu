@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { api } from '../../lib/api';
 import { FacilityItem } from '../../types';
 import { Building2, MapPin, Loader2 } from 'lucide-react';
+import { SkeletonNewsGrid } from '../../components/ui/Skeleton';
 
 export const FacilitiesPage: React.FC = () => {
   const [categoryFilter, setCategoryFilter] = useState('');
@@ -62,10 +63,7 @@ export const FacilitiesPage: React.FC = () => {
 
       {/* Facilities Grid */}
       {isLoading ? (
-        <div className="flex flex-col items-center justify-center py-20 text-forest-800">
-          <Loader2 className="w-8 h-8 animate-spin text-forest-600" />
-          <p className="text-xs font-medium text-gray-500 mt-3">Memuat fasilitas sekolah...</p>
-        </div>
+        <SkeletonNewsGrid count={6} />
       ) : !facilities?.length ? (
         <div className="text-center py-20 bg-white rounded-3xl border border-gray-100 p-8">
           <p className="text-base font-bold text-gray-800">Tidak ada fasilitas pada kategori ini.</p>

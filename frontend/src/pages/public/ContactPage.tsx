@@ -12,7 +12,9 @@ import {
   Instagram,
   Youtube,
   Facebook,
+  ExternalLink,
 } from 'lucide-react';
+import { SeoHelmet } from '../../components/ui/SeoHelmet';
 
 export const ContactPage: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -53,6 +55,11 @@ export const ContactPage: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
+      <SeoHelmet
+        title="Kontak & Informasi Sekolah"
+        description="Hubungi layanan sekretariat, panitia PPDB, dan kemitraan industri SMKN 1 Pakuan Ratu, Kabupaten Way Kanan."
+        url="/kontak"
+      />
       {/* Header */}
       <div className="text-center space-y-4 max-w-3xl mx-auto">
         <span className="px-3 py-1 rounded-lg bg-forest-100 text-forest-800 text-xs font-bold uppercase tracking-wider inline-block">
@@ -272,6 +279,39 @@ export const ContactPage: React.FC = () => {
               </form>
             )}
           </div>
+        </div>
+      </div>
+
+      {/* 3. PETA LOKASI KAMPUS (Google Maps) */}
+      <div className="glass-card p-6 sm:p-8 rounded-3xl border border-forest-100 shadow-sm space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h3 className="text-lg font-bold text-gray-900 font-serif">Peta Lokasi Kampus</h3>
+            <p className="text-xs text-gray-500 mt-0.5">
+              Jl. Raya Pakuan Ratu, Kec. Pakuan Ratu, Kab. Way Kanan, Lampung 34762
+            </p>
+          </div>
+          <a
+            href="https://maps.google.com/?q=SMK+Negeri+1+Pakuan+Ratu"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-forest-50 hover:bg-forest-100 text-forest-800 text-xs font-bold transition-colors w-fit border border-forest-100"
+          >
+            <span>Buka di Google Maps</span>
+            <ExternalLink className="w-3.5 h-3.5" />
+          </a>
+        </div>
+        <div className="rounded-2xl overflow-hidden h-72 sm:h-96 w-full border border-gray-200 shadow-inner">
+          <iframe
+            title="Peta Lokasi SMKN 1 Pakuan Ratu"
+            src="https://maps.google.com/maps?q=SMK+Negeri+1+Pakuan+Ratu+Way+Kanan&t=&z=15&ie=UTF8&iwloc=&output=embed"
+            width="100%"
+            height="100%"
+            style={{ border: 0 }}
+            allowFullScreen={false}
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          />
         </div>
       </div>
     </div>

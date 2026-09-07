@@ -3,6 +3,9 @@ import { Outlet } from 'react-router-dom';
 import { Navbar } from '../components/layout/Navbar';
 import { Footer } from '../components/layout/Footer';
 import { ToastContainer } from '../components/ui/Toast';
+import { GlobalSearchModal } from '../components/ui/GlobalSearchModal';
+import { WhatsAppFloatingButton } from '../components/ui/WhatsAppFloatingButton';
+import { PwaInstallPrompt } from '../components/ui/PwaInstallPrompt';
 
 export const PublicLayout: React.FC = () => {
   return (
@@ -12,7 +15,11 @@ export const PublicLayout: React.FC = () => {
         <Outlet />
       </main>
       <Footer />
+      <GlobalSearchModal />
+      <WhatsAppFloatingButton />
+      <PwaInstallPrompt />
       <ToastContainer />
     </div>
   );
 };
+

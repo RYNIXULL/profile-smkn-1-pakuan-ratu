@@ -4,6 +4,7 @@ import { api } from '../../lib/api';
 import { EventItem } from '../../types';
 import { MapPin, Clock, Calendar as CalendarIcon, Loader2 } from 'lucide-react';
 import { formatDateTime } from '../../lib/utils';
+import { SkeletonEventList } from '../../components/ui/Skeleton';
 
 export const EventsPage: React.FC = () => {
   const { data: events, isLoading } = useQuery<EventItem[]>({
@@ -27,10 +28,7 @@ export const EventsPage: React.FC = () => {
       </div>
 
       {isLoading ? (
-        <div className="flex flex-col items-center justify-center py-20 text-forest-800">
-          <Loader2 className="w-8 h-8 animate-spin text-forest-600" />
-          <p className="text-xs font-medium text-gray-500 mt-3">Memuat agenda kegiatan...</p>
-        </div>
+        <SkeletonEventList count={4} />
       ) : !events?.length ? (
         <div className="text-center py-20 bg-white rounded-3xl border border-gray-100 p-8">
           <p className="text-base font-bold text-gray-800">Belum ada agenda terdekat saat ini.</p>

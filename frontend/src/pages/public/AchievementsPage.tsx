@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { api } from '../../lib/api';
 import { AchievementItem } from '../../types';
 import { Award, Trophy, Medal, Filter, Loader2 } from 'lucide-react';
+import { SkeletonNewsGrid } from '../../components/ui/Skeleton';
 
 export const AchievementsPage: React.FC = () => {
   const [levelFilter, setLevelFilter] = useState('');
@@ -70,10 +71,7 @@ export const AchievementsPage: React.FC = () => {
 
       {/* Grid Prestasi */}
       {isLoading ? (
-        <div className="flex flex-col items-center justify-center py-20 text-forest-800">
-          <Loader2 className="w-8 h-8 animate-spin text-forest-600" />
-          <p className="text-xs font-medium text-gray-500 mt-3">Memuat prestasi siswa...</p>
-        </div>
+        <SkeletonNewsGrid count={6} />
       ) : !achievements?.length ? (
         <div className="text-center py-20 bg-white rounded-3xl border border-gray-100 p-8">
           <p className="text-base font-bold text-gray-800">Tidak ada data prestasi yang cocok dengan filter.</p>

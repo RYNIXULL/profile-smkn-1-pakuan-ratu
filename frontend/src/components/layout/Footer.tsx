@@ -142,6 +142,21 @@ export const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
+                <Link to="/ppdb" className="hover:text-emerald-400 font-bold text-white transition-colors flex items-center gap-1.5">
+                  <ArrowRight className="w-3 h-3 text-emerald-400" /> PPDB Online 2026/2027
+                </Link>
+              </li>
+              <li>
+                <Link to="/bkk" className="hover:text-white transition-colors flex items-center gap-1.5">
+                  <ArrowRight className="w-3 h-3 text-forest-500" /> BKK & Mitra Industri
+                </Link>
+              </li>
+              <li>
+                <Link to="/unduhan" className="hover:text-white transition-colors flex items-center gap-1.5">
+                  <ArrowRight className="w-3 h-3 text-forest-500" /> Pusat Unduhan Dokumen
+                </Link>
+              </li>
+              <li>
                 <Link to="/galeri" className="hover:text-white transition-colors flex items-center gap-1.5">
                   <ArrowRight className="w-3 h-3 text-forest-500" /> Galeri Foto & Dokumentasi
                 </Link>

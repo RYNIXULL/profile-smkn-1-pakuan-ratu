@@ -59,6 +59,7 @@ import {
 import {
   getAdminGalleries,
   createGallery,
+  updateGallery,
   addMediaToGallery,
   removeMediaFromGallery,
   deleteGallery,
@@ -75,6 +76,9 @@ import {
   markContactMessageRead,
   deleteContactMessage,
 } from '../services/contact.service';
+import { getPublicPpdbInfo, updatePpdbInfo, getAdminPpdbApplicants } from '../services/ppdb.service';
+import { getPublicBkkInfo, updateBkkConfig, getAdminTracerSubmissions } from '../services/bkk.service';
+import { getAdminDownloads, saveAdminDownloads } from '../services/download.service';
 import {
   getAllUsers,
   getAllRoles,
@@ -587,14 +591,52 @@ adminRouter.post(
   }
 );
 
+adminRouter.patch(
+  '/galleries/:id',
+  requireAdminOrHumas,
+  validate(GalleryUpdateSchema),
+  async (req: AuthenticatedRequest, res: Response) => {
+    try {
+      const { ipAddress, userAgent } = getClientMeta(req);
+      const updated = await updateGallery(req.params.id, req.body, req.user!.userId, ipAddress, userAgent);
+      apiSuccess(res, updated, 'Album galeri berhasil diperbarui.');
+    } catch (error: any) {
+      apiError(res, error.message, 'UPDATE_GALLERY_FAILED', null, 400);
+    }
+  }
+);
+
 adminRouter.post('/galleries/:id/items', requireAdminOrHumas, async (req: AuthenticatedRequest, res: Response) => {
   try {
-    const { mediaId, caption } = req.body;
-    if (!mediaId) {
-      apiError(res, 'Media ID wajib dipilih.', 'INVALID_INPUT', null, 400);
+    const { mediaId, url, caption } = req.body;
+    let resolvedMediaId = mediaId;
+
+    if (!resolvedMediaId && url) {
+      const existingMedia = await prisma.media.findFirst({ where: { url } });
+      if (existingMedia) {
+        resolvedMediaId = existingMedia.id;
+      } else {
+        const cleanName = url.split('/').pop() || 'photo.webp';
+        const createdMedia = await prisma.media.create({
+          data: {
+            filename: cleanName,
+            originalName: cleanName,
+            path: url,
+            url,
+            mimeType: 'image/webp',
+            sizeBytes: 0,
+            uploaderId: req.user?.userId,
+          },
+        });
+        resolvedMediaId = createdMedia.id;
+      }
+    }
+
+    if (!resolvedMediaId) {
+      apiError(res, 'Media ID atau URL foto wajib dipilih.', 'INVALID_INPUT', null, 400);
       return;
     }
-    const item = await addMediaToGallery(req.params.id, mediaId, caption);
+    const item = await addMediaToGallery(req.params.id, resolvedMediaId, caption);
     apiSuccess(res, item, 'Foto berhasil dimasukkan ke dalam album.');
   } catch (error: any) {
     apiError(res, error.message, 'ADD_GALLERY_ITEM_FAILED', null, 400);
@@ -788,5 +830,89 @@ adminRouter.put('/settings', requireSuperAdmin, async (req: AuthenticatedRequest
     apiSuccess(res, updated, 'Pengaturan sekolah berhasil diperbarui.');
   } catch (error: any) {
     apiError(res, error.message, 'UPDATE_SETTINGS_FAILED', null, 400);
+  }
+});
+
+// ===================================================================
+// 14. PPDB ONLINE MANAGEMENT
+// ===================================================================
+adminRouter.get('/ppdb', requireAdminOrHumas, async (_req: AuthenticatedRequest, res: Response) => {
+  try {
+    const data = await getPublicPpdbInfo();
+    apiSuccess(res, data, 'Konfigurasi PPDB berhasil dimuat.');
+  } catch (error: any) {
+    apiError(res, error.message, 'LOAD_PPDB_FAILED', null, 500);
+  }
+});
+
+adminRouter.put('/ppdb', requireAdminOrHumas, async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const { ipAddress, userAgent } = getClientMeta(req);
+    const updated = await updatePpdbInfo(req.body, req.user!.userId, ipAddress, userAgent);
+    apiSuccess(res, updated, 'Konfigurasi PPDB berhasil diperbarui.');
+  } catch (error: any) {
+    apiError(res, error.message, 'UPDATE_PPDB_FAILED', null, 400);
+  }
+});
+
+adminRouter.get('/ppdb/applicants', requireAdminOrHumas, async (_req: AuthenticatedRequest, res: Response) => {
+  try {
+    const list = await getAdminPpdbApplicants();
+    apiSuccess(res, list, 'Data calon siswa pendaftar PPDB berhasil dimuat.');
+  } catch (error: any) {
+    apiError(res, error.message, 'LOAD_PPDB_APPLICANTS_FAILED', null, 500);
+  }
+});
+
+// ===================================================================
+// 15. BKK & MITRA INDUSTRI MANAGEMENT
+// ===================================================================
+adminRouter.get('/bkk', requireAdminOrHumas, async (_req: AuthenticatedRequest, res: Response) => {
+  try {
+    const data = await getPublicBkkInfo();
+    apiSuccess(res, data, 'Data BKK dan Mitra Industri berhasil dimuat.');
+  } catch (error: any) {
+    apiError(res, error.message, 'LOAD_BKK_FAILED', null, 500);
+  }
+});
+
+adminRouter.put('/bkk', requireAdminOrHumas, async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const { ipAddress, userAgent } = getClientMeta(req);
+    const updated = await updateBkkConfig(req.body, req.user!.userId, ipAddress, userAgent);
+    apiSuccess(res, updated, 'Data lowongan kerja dan mitra BKK berhasil diperbarui.');
+  } catch (error: any) {
+    apiError(res, error.message, 'UPDATE_BKK_FAILED', null, 400);
+  }
+});
+
+adminRouter.get('/bkk/tracer', requireAdminOrHumas, async (_req: AuthenticatedRequest, res: Response) => {
+  try {
+    const list = await getAdminTracerSubmissions();
+    apiSuccess(res, list, 'Data respons tracer study alumni berhasil dimuat.');
+  } catch (error: any) {
+    apiError(res, error.message, 'LOAD_TRACER_FAILED', null, 500);
+  }
+});
+
+// ===================================================================
+// 16. PUSAT UNDUHAN (DOWNLOAD CENTER)
+// ===================================================================
+adminRouter.get('/downloads', requireAdminOrHumas, async (_req: AuthenticatedRequest, res: Response) => {
+  try {
+    const list = await getAdminDownloads();
+    apiSuccess(res, list, 'Daftar dokumen unduhan berhasil dimuat.');
+  } catch (error: any) {
+    apiError(res, error.message, 'LOAD_DOWNLOADS_FAILED', null, 500);
+  }
+});
+
+adminRouter.put('/downloads', requireAdminOrHumas, async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const { ipAddress, userAgent } = getClientMeta(req);
+    const updated = await saveAdminDownloads(req.body.items || [], req.user!.userId, ipAddress, userAgent);
+    apiSuccess(res, updated, 'Daftar dokumen unduhan berhasil disimpan.');
+  } catch (error: any) {
+    apiError(res, error.message, 'SAVE_DOWNLOADS_FAILED', null, 400);
   }
 });

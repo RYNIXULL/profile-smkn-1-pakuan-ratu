@@ -4,6 +4,7 @@ import { api } from '../../lib/api';
 import { AnnouncementItem } from '../../types';
 import { Bell, AlertCircle, Calendar, Download, Loader2 } from 'lucide-react';
 import { formatDate } from '../../lib/utils';
+import { SkeletonEventList } from '../../components/ui/Skeleton';
 
 export const AnnouncementsPage: React.FC = () => {
   const { data: announcements, isLoading } = useQuery<AnnouncementItem[]>({
@@ -15,8 +16,8 @@ export const AnnouncementsPage: React.FC = () => {
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
       {/* Header */}
       <div className="text-center space-y-4 max-w-3xl mx-auto">
-        <span className="px-3 py-1 rounded-lg bg-amber-100 text-amber-900 text-xs font-bold uppercase tracking-wider inline-block">
-          Informasi Kedinasan & Sekolah
+        <span className="px-3 py-1 rounded-lg bg-emerald-100 text-emerald-900 text-xs font-bold uppercase tracking-wider inline-block">
+          Warta Kampus
         </span>
         <h1 className="editorial-title text-3xl sm:text-5xl font-bold text-forest-900">
           Pengumuman Resmi
@@ -27,10 +28,7 @@ export const AnnouncementsPage: React.FC = () => {
       </div>
 
       {isLoading ? (
-        <div className="flex flex-col items-center justify-center py-20 text-forest-800">
-          <Loader2 className="w-8 h-8 animate-spin text-forest-600" />
-          <p className="text-xs font-medium text-gray-500 mt-3">Memuat pengumuman...</p>
-        </div>
+        <SkeletonEventList count={4} />
       ) : !announcements?.length ? (
         <div className="text-center py-20 bg-white rounded-3xl border border-gray-100 p-8">
           <p className="text-base font-bold text-gray-800">Tidak ada pengumuman aktif saat ini.</p>

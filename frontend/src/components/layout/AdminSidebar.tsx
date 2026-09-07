@@ -19,6 +19,9 @@ import {
   LogOut,
   ExternalLink,
   Bell,
+  GraduationCap,
+  Briefcase,
+  DownloadCloud,
 } from 'lucide-react';
 import { useAuth } from '../../stores/authStore';
 
@@ -46,6 +49,9 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({ mobileOpen, setMobil
     { to: '/admin/media', label: 'Media Library', icon: HardDrive },
     { to: '/admin/pages', label: 'Halaman Statis', icon: FileText },
     { to: '/admin/homepage', label: 'Pengaturan Beranda', icon: SlidersHorizontal },
+    { to: '/admin/ppdb', label: 'PPDB Online', icon: GraduationCap },
+    { to: '/admin/bkk', label: 'BKK & Kemitraan', icon: Briefcase },
+    { to: '/admin/downloads', label: 'Pusat Unduhan', icon: DownloadCloud },
     { to: '/admin/contacts', label: 'Pesan Masuk', icon: Mail },
   ];
 

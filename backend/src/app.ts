@@ -7,6 +7,7 @@ import { apiRouter } from './routes';
 import { errorHandler } from './middleware/errorHandler';
 import { generalLimiter } from './middleware/rateLimiter';
 import { apiSuccess, apiError } from './utils/response';
+import { generateSitemapXml, generateRobotsTxt } from './services/sitemap.service';
 
 export const app = express();
 
@@ -47,6 +48,22 @@ app.get('/api/health', (_req, res) => {
     environment: config.env,
     service: 'SMKN 1 Pakuan Ratu Backend API',
   });
+});
+
+// 6b. Sitemap.xml & Robots.txt for Search Engines
+app.get(['/sitemap.xml', '/api/sitemap.xml', '/api/public/sitemap.xml'], async (_req, res) => {
+  try {
+    const xml = await generateSitemapXml();
+    res.header('Content-Type', 'application/xml');
+    res.send(xml);
+  } catch (error) {
+    res.status(500).send('Error generating sitemap');
+  }
+});
+
+app.get(['/robots.txt', '/api/robots.txt', '/api/public/robots.txt'], (_req, res) => {
+  res.header('Content-Type', 'text/plain');
+  res.send(generateRobotsTxt());
 });
 
 // 7. Mount Core REST API

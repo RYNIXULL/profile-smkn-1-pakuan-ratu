@@ -1,0 +1,69 @@
+{
+  "name": "SMKN 1 Pakuan Ratu",
+  "short_name": "SMKN1 Pakuan Ratu",
+  "description": "Website Resmi dan Portal Layanan Digital SMK Negeri 1 Pakuan Ratu Kabupaten Way Kanan",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#FBF9F1",
+  "theme_color": "#16423C",
+  "lang": "id-ID",
+  "categories": ["education", "productivity"],
+  "icons": [
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-maskable-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "PPDB 2026",
+      "short_name": "PPDB",
+      "description": "Pendaftaran Peserta Didik Baru 2026/2027",
+      "url": "/ppdb",
+      "icons": [{ "src": "/icons/icon-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Berita & Warta",
+      "short_name": "Berita",
+      "description": "Kabar terkini seputar sekolah",
+      "url": "/berita",
+      "icons": [{ "src": "/icons/icon-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Bursa Kerja (BKK)",
+      "short_name": "BKK",
+      "description": "Info lowongan kerja mitra industri",
+      "url": "/bkk",
+      "icons": [{ "src": "/icons/icon-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Unduhan Dokumen",
+      "short_name": "Unduhan",
+      "description": "Pusat arsip dokumen dan panduan resmi",
+      "url": "/unduhan",
+      "icons": [{ "src": "/icons/icon-192x192.png", "sizes": "192x192" }]
+    }
+  ]
+}

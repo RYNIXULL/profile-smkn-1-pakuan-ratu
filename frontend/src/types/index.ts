@@ -189,3 +189,126 @@ export interface Pagination {
   total: number;
   totalPages: number;
 }
+
+export interface PpdbQuotaItem {
+  major: string;
+  slug: string;
+  capacity: number;
+  classes: number;
+  description: string;
+  icon: string;
+}
+
+export interface PpdbTrackItem {
+  name: string;
+  percentage: string;
+  desc: string;
+}
+
+export interface PpdbStepItem {
+  step: number;
+  title: string;
+  desc: string;
+}
+
+export interface PpdbFaqItem {
+  q: string;
+  a: string;
+}
+
+export interface PpdbConfig {
+  academicYear: string;
+  title: string;
+  subtitle: string;
+  isOpen: boolean;
+  startDate: string;
+  endDate: string;
+  announcementDate: string;
+  reRegistrationDate: string;
+  officialPortalUrl: string;
+  contactWhatsapp: string;
+  contactPersonName: string;
+  totalQuota: number;
+  quotas: PpdbQuotaItem[];
+  tracks: PpdbTrackItem[];
+  requirements: string[];
+  steps: PpdbStepItem[];
+  faq: PpdbFaqItem[];
+}
+
+export interface PpdbApplicant {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  isRead: boolean;
+  createdAt: string;
+  juniorSchool: string;
+  programChoice1: string;
+  programChoice2: string;
+  questions: string;
+}
+
+export interface BkkJob {
+  id: string;
+  title: string;
+  company: string;
+  logoUrl?: string;
+  location: string;
+  type: string;
+  salaryRange: string;
+  targetMajor: string;
+  requirements: string;
+  deadline: string;
+  contactUrl: string;
+  status: string;
+}
+
+export interface IndustryPartner {
+  id: string;
+  name: string;
+  sector: string;
+  mouScope: string;
+  logoUrl?: string;
+  websiteUrl?: string;
+}
+
+export interface BkkConfig {
+  heroTitle: string;
+  heroSubtitle: string;
+  stats: {
+    totalPartners: number;
+    absorptionRate: string;
+    activeVacancies: number;
+    trackedAlumni: string;
+  };
+  jobs: BkkJob[];
+  partners: IndustryPartner[];
+}
+
+export interface TracerStudySubmission {
+  id: string;
+  fullName: string;
+  email: string;
+  phone: string;
+  createdAt: string;
+  graduationYear: number | string;
+  programMajor: string;
+  currentStatus: string;
+  institutionName: string;
+  jobTitleOrField: string;
+  notes: string;
+}
+
+export interface DownloadItem {
+  id: string;
+  title: string;
+  category: string;
+  description: string;
+  fileUrl: string;
+  fileSize: string;
+  fileType: string;
+  downloadCount: number;
+  publishedDate: string;
+}
+

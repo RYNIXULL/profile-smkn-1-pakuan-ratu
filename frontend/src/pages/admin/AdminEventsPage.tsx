@@ -6,6 +6,7 @@ import { Plus, Edit, Trash2, Calendar, MapPin, Loader2 } from 'lucide-react';
 import { formatDateTime } from '../../lib/utils';
 import { Modal } from '../../components/ui/Modal';
 import { toast } from '../../stores/toastStore';
+import { ImageUploadInput } from '../../components/ui/ImageUploadInput';
 
 export const AdminEventsPage: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -16,6 +17,7 @@ export const AdminEventsPage: React.FC = () => {
   const [description, setDescription] = useState('');
   const [location, setLocation] = useState('');
   const [startDate, setStartDate] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
   const [status, setStatus] = useState<'UPCOMING' | 'ONGOING' | 'COMPLETED' | 'CANCELLED'>('UPCOMING');
 
   const queryClient = useQueryClient();
@@ -59,6 +61,7 @@ export const AdminEventsPage: React.FC = () => {
     setTitle('');
     setDescription('');
     setLocation('');
+    setImageUrl('');
     setStartDate(new Date().toISOString().slice(0, 16));
     setStatus('UPCOMING');
     setModalOpen(true);
@@ -69,6 +72,7 @@ export const AdminEventsPage: React.FC = () => {
     setTitle(item.title);
     setDescription(item.description);
     setLocation(item.location);
+    setImageUrl(item.imageUrl || '');
     setStartDate(new Date(item.startDate).toISOString().slice(0, 16));
     setStatus(item.status);
     setModalOpen(true);
@@ -92,6 +96,7 @@ export const AdminEventsPage: React.FC = () => {
       location,
       startDate: new Date(startDate).toISOString(),
       status,
+      imageUrl: imageUrl.trim() || null,
     });
   };
 
@@ -212,6 +217,14 @@ export const AdminEventsPage: React.FC = () => {
               </select>
             </div>
           </div>
+          <ImageUploadInput
+            label="Foto / Banner Agenda Kegiatan (Opsional)"
+            value={imageUrl}
+            onChange={setImageUrl}
+            aspectRatio="video"
+            helperText="Pilih foto banner agenda dari komputer (format JPG, PNG, WebP maks. 5MB)."
+          />
+
           <div>
             <label className="block text-xs font-semibold text-gray-700 mb-1">Deskripsi Agenda *</label>
             <textarea

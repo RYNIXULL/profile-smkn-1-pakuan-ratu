@@ -5,6 +5,7 @@ import { api } from '../../lib/api';
 import { NewsCategory, NewsItem, NewsStatus } from '../../types';
 import { ArrowLeft, Save, Send, Image as ImageIcon, Loader2 } from 'lucide-react';
 import { toast } from '../../stores/toastStore';
+import { ImageUploadInput } from '../../components/ui/ImageUploadInput';
 
 export const AdminNewsEditorPage: React.FC = () => {
   const { id } = useParams<{ id?: string }>();
@@ -252,30 +253,13 @@ export const AdminNewsEditorPage: React.FC = () => {
               </select>
             </div>
 
-            <div>
-              <label className="block text-xs font-semibold text-gray-700 mb-1">
-                URL Gambar Sampul (Thumbnail)
-              </label>
-              <input
-                type="text"
-                value={thumbnailUrl}
-                onChange={(e) => setThumbnailUrl(e.target.value)}
-                placeholder="https://... atau /uploads/..."
-                className="w-full px-3 py-2 rounded-xl border border-gray-200 text-xs text-gray-900 focus:outline-none focus:border-forest-700"
-              />
-              <p className="text-[10px] text-gray-400 mt-1">
-                Gunakan URL gambar langsung atau dari menu Media Library.
-              </p>
-              {thumbnailUrl && (
-                <div className="mt-2 rounded-xl overflow-hidden aspect-video bg-slate-100 border border-gray-200">
-                  <img
-                    src={thumbnailUrl}
-                    alt="Preview"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              )}
-            </div>
+            <ImageUploadInput
+              label="Gambar Sampul Berita (Thumbnail)"
+              value={thumbnailUrl}
+              onChange={setThumbnailUrl}
+              aspectRatio="video"
+              helperText="Pilih foto sampul berita dari komputer (format JPG, PNG, WebP maks. 5MB). Otomatis dioptimasi ke WebP."
+            />
 
             <div className="flex items-center gap-2 pt-2">
               <input

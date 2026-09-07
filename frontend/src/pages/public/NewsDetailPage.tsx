@@ -6,6 +6,8 @@ import { NewsItem } from '../../types';
 import { ArrowLeft, Eye, Share2, ChevronRight, Loader2 } from 'lucide-react';
 import { formatDate } from '../../lib/utils';
 import { toast } from '../../stores/toastStore';
+import { SeoHelmet } from '../../components/ui/SeoHelmet';
+import { Skeleton, SkeletonPageHeader } from '../../components/ui/Skeleton';
 
 export const NewsDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -28,9 +30,14 @@ export const NewsDetailPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="flex flex-col items-center justify-center py-28 text-forest-800">
-        <Loader2 className="w-8 h-8 animate-spin text-forest-600" />
-        <p className="text-xs font-medium text-gray-500 mt-3">Memuat artikel berita...</p>
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8">
+        <SkeletonPageHeader />
+        <Skeleton className="h-96 w-full rounded-3xl" />
+        <div className="space-y-4">
+          <Skeleton className="h-5 w-full rounded-md" />
+          <Skeleton className="h-5 w-5/6 rounded-md" />
+          <Skeleton className="h-5 w-4/6 rounded-md" />
+        </div>
       </div>
     );
   }
@@ -43,6 +50,17 @@ export const NewsDetailPage: React.FC = () => {
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
+      <SeoHelmet
+        title={item.title}
+        description={item.summary || item.metaDesc || item.title}
+        image={item.thumbnailUrl}
+        url={`/berita/${item.slug}`}
+        type="article"
+        publishedTime={item.publishedAt}
+        author={item.author?.name}
+        category={item.category?.name}
+      />
+
       {/* Back Link */}
       <div>
         <Link

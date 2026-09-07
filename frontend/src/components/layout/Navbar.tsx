@@ -16,6 +16,7 @@ import {
   Image as ImageIcon,
   Building2,
   Users,
+  Search,
 } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
@@ -233,6 +234,24 @@ export const Navbar: React.FC = () => {
             </Link>
 
             <Link
+              to="/bkk"
+              className={`px-3 py-2 rounded-lg transition-colors hover:text-forest-600 hover:bg-forest-50/50 ${
+                location.pathname.startsWith('/bkk') ? 'text-forest-800 font-semibold bg-white/50' : ''
+              }`}
+            >
+              BKK & Industri
+            </Link>
+
+            <Link
+              to="/unduhan"
+              className={`px-3 py-2 rounded-lg transition-colors hover:text-forest-600 hover:bg-forest-50/50 ${
+                location.pathname.startsWith('/unduhan') ? 'text-forest-800 font-semibold bg-white/50' : ''
+              }`}
+            >
+              Unduhan
+            </Link>
+
+            <Link
               to="/kontak"
               className={`px-3 py-2 rounded-lg transition-colors hover:text-forest-600 hover:bg-forest-50/50 ${
                 location.pathname === '/kontak' ? 'text-forest-800 font-semibold bg-white/50' : ''
@@ -240,10 +259,46 @@ export const Navbar: React.FC = () => {
             >
               Kontak
             </Link>
+
+            {/* Global Search Command Palette Trigger */}
+            <button
+              type="button"
+              onClick={() => window.dispatchEvent(new CustomEvent('open-global-search'))}
+              className="ml-1 flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/60 hover:bg-white text-forest-900 text-xs font-semibold border border-forest-100/80 shadow-2xs hover:shadow-xs transition-all group"
+              title="Pencarian Cepat (Ctrl+K)"
+            >
+              <Search className="w-3.5 h-3.5 text-forest-700 group-hover:text-forest-900" />
+              <span className="text-forest-800 group-hover:text-forest-950 font-medium">Cari</span>
+              <kbd className="hidden 2xl:inline-flex items-center px-1.5 py-0.5 text-[10px] font-mono text-forest-700 bg-forest-50 border border-forest-200/60 rounded">
+                Ctrl K
+              </kbd>
+            </button>
+
+            <Link
+              to="/ppdb"
+              className="ml-2 flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-forest-800 text-white text-xs font-bold shadow-xs hover:shadow-md hover:from-emerald-500 hover:to-forest-700 transition-all border border-emerald-400/30"
+            >
+              <span className="w-2 h-2 rounded-full bg-emerald-300 animate-pulse" />
+              <span>PPDB 2026</span>
+            </Link>
           </nav>
 
           {/* Mobile menu toggle */}
           <div className="flex xl:hidden items-center gap-2">
+            <button
+              type="button"
+              onClick={() => window.dispatchEvent(new CustomEvent('open-global-search'))}
+              className="p-2 rounded-xl bg-white/60 hover:bg-white text-forest-800 transition-colors border border-white/60"
+              aria-label="Pencarian Cepat"
+            >
+              <Search className="w-4 h-4 text-forest-700" />
+            </button>
+            <Link
+              to="/ppdb"
+              className="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-emerald-600 text-white text-xs font-bold shadow-xs"
+            >
+              <span>PPDB</span>
+            </Link>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-2 rounded-xl bg-white/60 hover:bg-white text-forest-800 transition-colors border border-white/60"
@@ -257,6 +312,23 @@ export const Navbar: React.FC = () => {
         {/* Mobile Navigation Drawer */}
         {mobileMenuOpen && (
           <div className="xl:hidden mt-3 p-4 rounded-2xl bg-white/95 backdrop-blur-xl border border-white/60 shadow-2xl animate-slide-up">
+            {/* Mobile Search Button */}
+            <button
+              type="button"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                window.dispatchEvent(new CustomEvent('open-global-search'));
+              }}
+              className="flex items-center justify-between w-full px-3 py-2.5 mb-3 rounded-xl bg-forest-50 border border-forest-100 text-forest-800 text-xs font-bold shadow-xs"
+            >
+              <div className="flex items-center gap-2.5">
+                <Search className="w-4 h-4 text-forest-700" />
+                <span>Cari Berita, Guru, Agenda...</span>
+              </div>
+              <kbd className="text-[10px] px-1.5 py-0.5 bg-white rounded border border-gray-200 text-gray-500 font-mono">
+                Ctrl K
+              </kbd>
+            </button>
             <div className="flex flex-col gap-1 text-sm font-medium text-gray-800">
               <Link to="/" className="px-3 py-2 rounded-lg hover:bg-forest-50">
                 Beranda
@@ -301,6 +373,9 @@ export const Navbar: React.FC = () => {
               </div>
 
               <div className="border-t border-gray-100 my-1 pt-1 grid grid-cols-2 gap-1 text-xs">
+                <Link to="/ppdb" className="px-3 py-2 bg-emerald-50 text-emerald-800 font-bold rounded-lg col-span-2">
+                  PPDB Online 2026/2027
+                </Link>
                 <Link to="/berita" className="px-3 py-2 hover:bg-forest-50 rounded-lg">
                   Berita
                 </Link>
@@ -312,6 +387,12 @@ export const Navbar: React.FC = () => {
                 </Link>
                 <Link to="/galeri" className="px-3 py-2 hover:bg-forest-50 rounded-lg">
                   Galeri
+                </Link>
+                <Link to="/bkk" className="px-3 py-2 hover:bg-forest-50 rounded-lg">
+                  BKK & Industri
+                </Link>
+                <Link to="/unduhan" className="px-3 py-2 hover:bg-forest-50 rounded-lg">
+                  Pusat Unduhan
                 </Link>
                 <Link to="/guru" className="px-3 py-2 hover:bg-forest-50 rounded-lg">
                   Guru & GTK

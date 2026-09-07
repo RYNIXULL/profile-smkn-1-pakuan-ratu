@@ -5,6 +5,8 @@ import { api } from '../../lib/api';
 import { NewsItem, NewsCategory, Pagination } from '../../types';
 import { Search, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
 import { formatDate } from '../../lib/utils';
+import { SkeletonNewsGrid } from '../../components/ui/Skeleton';
+import { SeoHelmet } from '../../components/ui/SeoHelmet';
 
 export const NewsPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -58,6 +60,11 @@ export const NewsPage: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
+      <SeoHelmet
+        title="Berita & Warta Sekolah Terkini"
+        description="Informasi terkini seputar kegiatan akademik, prestasi siswa, inovasi kejuruan, dan kemitraan industri di SMKN 1 Pakuan Ratu."
+        url="/berita"
+      />
       {/* Header */}
       <div className="text-center space-y-4 max-w-3xl mx-auto">
         <span className="px-3 py-1 rounded-lg bg-forest-100 text-forest-800 text-xs font-bold uppercase tracking-wider inline-block">
@@ -120,10 +127,7 @@ export const NewsPage: React.FC = () => {
 
       {/* News Grid */}
       {isLoading ? (
-        <div className="flex flex-col items-center justify-center py-20 text-forest-800">
-          <Loader2 className="w-8 h-8 animate-spin text-forest-600" />
-          <p className="text-xs font-medium text-gray-500 mt-3">Memuat artikel berita...</p>
-        </div>
+        <SkeletonNewsGrid count={6} />
       ) : !newsResponse?.items.length ? (
         <div className="text-center py-20 bg-white rounded-3xl border border-gray-100 p-8">
           <p className="text-base font-bold text-gray-800">Tidak ada berita yang ditemukan.</p>

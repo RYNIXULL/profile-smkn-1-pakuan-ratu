@@ -5,6 +5,7 @@ import { AchievementItem } from '../../types';
 import { Plus, Edit, Trash2, Award, Trophy, Loader2 } from 'lucide-react';
 import { Modal } from '../../components/ui/Modal';
 import { toast } from '../../stores/toastStore';
+import { ImageUploadInput } from '../../components/ui/ImageUploadInput';
 
 export const AdminAchievementsPage: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -246,16 +247,13 @@ export const AdminAchievementsPage: React.FC = () => {
               />
             </div>
           </div>
-          <div>
-            <label className="block text-xs font-semibold text-gray-700 mb-1">URL Foto Prestasi</label>
-            <input
-              type="text"
-              value={photoUrl}
-              onChange={(e) => setPhotoUrl(e.target.value)}
-              placeholder="https://... atau dari Media Library"
-              className="w-full px-3 py-2 rounded-xl border border-gray-200 text-xs text-gray-900 focus:outline-none focus:border-forest-700"
-            />
-          </div>
+          <ImageUploadInput
+            label="Foto Prestasi / Dokumentasi Piagam"
+            value={photoUrl}
+            onChange={setPhotoUrl}
+            aspectRatio="video"
+            helperText="Pilih foto dokumentasi prestasi dari komputer (format JPG, PNG, WebP maks. 5MB). Otomatis dioptimasi ke WebP."
+          />
           <div>
             <label className="block text-xs font-semibold text-gray-700 mb-1">Deskripsi Singkat</label>
             <textarea

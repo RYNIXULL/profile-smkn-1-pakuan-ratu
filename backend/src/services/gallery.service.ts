@@ -31,6 +31,10 @@ export async function getAdminGalleries() {
   return prisma.gallery.findMany({
     orderBy: { createdAt: 'desc' },
     include: {
+      items: {
+        orderBy: { orderIndex: 'asc' },
+        include: { media: true },
+      },
       _count: { select: { items: true } },
     },
   });
@@ -64,6 +68,49 @@ export async function createGallery(data: any, userId: string, ipAddress?: strin
   });
 
   return created;
+}
+
+export async function updateGallery(id: string, data: any, userId: string, ipAddress?: string, userAgent?: string) {
+  const existing = await prisma.gallery.findUnique({ where: { id } });
+  if (!existing) throw new Error('Album galeri tidak ditemukan.');
+
+  let slug = existing.slug;
+  if (data.title && data.title !== existing.title) {
+    let baseSlug = slugify(data.title);
+    slug = baseSlug;
+    let counter = 1;
+    while (await prisma.gallery.findFirst({ where: { slug, NOT: { id } } })) {
+      slug = `${baseSlug}-${counter}`;
+      counter++;
+    }
+  }
+
+  const updated = await prisma.gallery.update({
+    where: { id },
+    data: {
+      ...data,
+      slug,
+    },
+    include: {
+      items: {
+        orderBy: { orderIndex: 'asc' },
+        include: { media: true },
+      },
+      _count: { select: { items: true } },
+    },
+  });
+
+  await logAudit({
+    userId,
+    action: 'UPDATE',
+    resource: 'galleries',
+    resourceId: id,
+    details: { title: updated.title },
+    ipAddress,
+    userAgent,
+  });
+
+  return updated;
 }
 
 export async function addMediaToGallery(galleryId: string, mediaId: string, caption?: string) {

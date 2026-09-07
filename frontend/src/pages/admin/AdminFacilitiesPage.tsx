@@ -5,6 +5,7 @@ import { FacilityItem } from '../../types';
 import { Plus, Edit, Trash2, Building2, Loader2 } from 'lucide-react';
 import { Modal } from '../../components/ui/Modal';
 import { toast } from '../../stores/toastStore';
+import { ImageUploadInput } from '../../components/ui/ImageUploadInput';
 
 export const AdminFacilitiesPage: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -193,16 +194,13 @@ export const AdminFacilitiesPage: React.FC = () => {
               />
             </div>
           </div>
-          <div>
-            <label className="block text-xs font-semibold text-gray-700 mb-1">URL Foto Fasilitas</label>
-            <input
-              type="text"
-              value={imageUrl}
-              onChange={(e) => setImageUrl(e.target.value)}
-              placeholder="https://... atau dari Media"
-              className="w-full px-3 py-2 rounded-xl border border-gray-200 text-xs text-gray-900 focus:outline-none focus:border-forest-700"
-            />
-          </div>
+          <ImageUploadInput
+            label="Foto Fasilitas / Sarana Sekolah"
+            value={imageUrl}
+            onChange={setImageUrl}
+            aspectRatio="video"
+            helperText="Pilih foto fasilitas dari komputer (format JPG, PNG, WebP maks. 5MB). Otomatis dikompresi ke WebP."
+          />
           <div>
             <label className="block text-xs font-semibold text-gray-700 mb-1">Deskripsi Fasilitas *</label>
             <textarea

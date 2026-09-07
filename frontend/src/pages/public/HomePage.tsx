@@ -25,9 +25,12 @@ import {
   Compass,
   CheckCircle2,
   Image as ImageIcon,
+  GraduationCap,
+  Briefcase,
 } from 'lucide-react';
 import { formatDate, truncateText } from '../../lib/utils';
 import { motion } from 'framer-motion';
+import { SeoHelmet } from '../../components/ui/SeoHelmet';
 
 const programIcons: Record<string, React.ReactNode> = {
   pertanian: <Sprout className="w-6 h-6 text-emerald-600" />,
@@ -83,6 +86,11 @@ export const HomePage: React.FC = () => {
 
   return (
     <div className="space-y-24 pb-20">
+      <SeoHelmet
+        title="SMKN 1 Pakuan Ratu - Berakar pada Potensi, Tumbuh Menuju Masa Depan"
+        description="Website Resmi SMK Negeri 1 Pakuan Ratu, Kabupaten Way Kanan, Lampung. Pusat keunggulan vokasi bidang Pertanian, Peternakan, Akuntansi, DKV, dan TBSM."
+        url="/"
+      />
       {/* ------------------------------------------------------------- */}
       {/* 1. HERO SECTION */}
       {/* ------------------------------------------------------------- */}
@@ -148,6 +156,58 @@ export const HomePage: React.FC = () => {
               <BookOpen className="w-4 h-4 text-emerald-300" />
             </Link>
           </motion.div>
+        </div>
+      </section>
+
+      {/* ------------------------------------------------------------- */}
+      {/* 1.5. HIGHLIGHT BANNER: PPDB & BKK */}
+      {/* ------------------------------------------------------------- */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="glass-card p-6 rounded-3xl border border-white/50 shadow-md bg-white/80 backdrop-blur-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-3.5">
+              <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0">
+                <GraduationCap className="w-6 h-6" />
+              </div>
+              <div>
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-extrabold uppercase tracking-wider">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
+                  Pendaftaran Dibuka
+                </span>
+                <h3 className="text-sm font-bold text-gray-900 mt-1">PPDB Online TA 2026/2027</h3>
+                <p className="text-xs text-gray-500">Kuota 360 siswa untuk 5 program keahlian vokasi.</p>
+              </div>
+            </div>
+            <Link
+              to="/ppdb"
+              className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-forest-800 hover:bg-forest-900 text-white text-xs font-semibold shadow-xs transition-all shrink-0"
+            >
+              <span>Info PPDB</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+
+          <div className="glass-card p-6 rounded-3xl border border-white/50 shadow-md bg-white/80 backdrop-blur-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-3.5">
+              <div className="w-12 h-12 rounded-2xl bg-blue-100 text-blue-800 flex items-center justify-center shrink-0">
+                <Briefcase className="w-6 h-6" />
+              </div>
+              <div>
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-800 text-[10px] font-extrabold uppercase tracking-wider">
+                  Vokasi Link & Match
+                </span>
+                <h3 className="text-sm font-bold text-gray-900 mt-1">Bursa Kerja Khusus & DUDI</h3>
+                <p className="text-xs text-gray-500">28+ mitra industri aktif & lowongan kerja lulusan.</p>
+              </div>
+            </div>
+            <Link
+              to="/bkk"
+              className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-semibold shadow-xs transition-all shrink-0"
+            >
+              <span>Info BKK</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
         </div>
       </section>
 

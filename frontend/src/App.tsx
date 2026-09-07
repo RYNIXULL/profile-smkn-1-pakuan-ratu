@@ -19,6 +19,9 @@ import { GalleriesPage } from './pages/public/GalleriesPage';
 import { GalleryDetailPage } from './pages/public/GalleryDetailPage';
 import { ContactPage } from './pages/public/ContactPage';
 import { NotFoundPage } from './pages/public/NotFoundPage';
+import { PpdbPage } from './pages/public/PpdbPage';
+import { BkkPage } from './pages/public/BkkPage';
+import { DownloadsPage } from './pages/public/DownloadsPage';
 
 // Admin Pages
 import { AdminLoginPage } from './pages/admin/AdminLoginPage';
@@ -39,6 +42,9 @@ import { AdminContactsPage } from './pages/admin/AdminContactsPage';
 import { AdminUsersPage } from './pages/admin/AdminUsersPage';
 import { AdminAuditLogsPage } from './pages/admin/AdminAuditLogsPage';
 import { AdminSettingsPage } from './pages/admin/AdminSettingsPage';
+import { AdminPpdbPage } from './pages/admin/AdminPpdbPage';
+import { AdminBkkPage } from './pages/admin/AdminBkkPage';
+import { AdminDownloadsPage } from './pages/admin/AdminDownloadsPage';
 
 export const App: React.FC = () => {
   return (
@@ -76,6 +82,11 @@ export const App: React.FC = () => {
         <Route path="/galeri" element={<GalleriesPage />} />
         <Route path="/galeri/:slug" element={<GalleryDetailPage />} />
 
+        {/* Layanan Sekolah Baru */}
+        <Route path="/ppdb" element={<PpdbPage />} />
+        <Route path="/bkk" element={<BkkPage />} />
+        <Route path="/unduhan" element={<DownloadsPage />} />
+
         {/* Kontak */}
         <Route path="/kontak" element={<ContactPage />} />
 
@@ -104,6 +115,9 @@ export const App: React.FC = () => {
         <Route path="pages" element={<AdminPagesEditorPage />} />
         <Route path="homepage" element={<AdminHomepageEditorPage />} />
         <Route path="contacts" element={<AdminContactsPage />} />
+        <Route path="ppdb" element={<AdminPpdbPage />} />
+        <Route path="bkk" element={<AdminBkkPage />} />
+        <Route path="downloads" element={<AdminDownloadsPage />} />
         <Route path="users" element={<AdminUsersPage />} />
         <Route path="audit-logs" element={<AdminAuditLogsPage />} />
         <Route path="settings" element={<AdminSettingsPage />} />

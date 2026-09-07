@@ -16,6 +16,8 @@ import {
   ArrowLeft,
   Loader2,
 } from 'lucide-react';
+import { SeoHelmet } from '../../components/ui/SeoHelmet';
+import { Skeleton, SkeletonPageHeader } from '../../components/ui/Skeleton';
 
 const programIcons: Record<string, React.ReactNode> = {
   pertanian: <Sprout className="w-8 h-8 text-emerald-600" />,
@@ -44,9 +46,9 @@ export const ProgramDetailPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="flex flex-col items-center justify-center py-28 text-forest-800">
-        <Loader2 className="w-8 h-8 animate-spin text-forest-600" />
-        <p className="text-xs font-medium text-gray-500 mt-3">Memuat detail program keahlian...</p>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8">
+        <SkeletonPageHeader />
+        <Skeleton className="h-80 w-full rounded-3xl" />
       </div>
     );
   }
@@ -80,6 +82,13 @@ export const ProgramDetailPage: React.FC = () => {
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
+      <SeoHelmet
+        title={`Jurusan ${program.name}`}
+        description={program.shortDesc || program.tagline || `Program keahlian vokasi unggulan ${program.name} di SMKN 1 Pakuan Ratu.`}
+        image={program.imageUrl || programImages[program.slug]}
+        url={`/program-keahlian/${program.slug}`}
+      />
+
       {/* Back button */}
       <div>
         <Link

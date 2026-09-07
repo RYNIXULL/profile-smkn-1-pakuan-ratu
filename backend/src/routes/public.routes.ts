@@ -11,6 +11,10 @@ import { getPublicPageBySlug } from '../services/page.service';
 import { getPublicHomepageSections } from '../services/homepage.service';
 import { getPublicSettings } from '../services/setting.service';
 import { submitContactMessage } from '../services/contact.service';
+import { getPublicPpdbInfo, submitPpdbConsultation } from '../services/ppdb.service';
+import { getPublicBkkInfo, submitTracerStudy } from '../services/bkk.service';
+import { getPublicDownloads } from '../services/download.service';
+import { searchPublic } from '../services/search.service';
 import { validate } from '../middleware/validate';
 import { contactLimiter } from '../middleware/rateLimiter';
 import { ContactMessageSchema } from '../validators';
@@ -208,3 +212,97 @@ publicRouter.post(
     }
   }
 );
+
+// 12. PPDB Online
+publicRouter.get('/ppdb', async (_req: Request, res: Response) => {
+  try {
+    const data = await getPublicPpdbInfo();
+    apiSuccess(res, data, 'Informasi PPDB berhasil dimuat.');
+  } catch (error: any) {
+    apiError(res, error.message, 'LOAD_PPDB_FAILED', null, 500);
+  }
+});
+
+publicRouter.post('/ppdb/consult', contactLimiter, async (req: Request, res: Response) => {
+  try {
+    const ipAddress = (req.headers['x-forwarded-for'] as string) || req.socket.remoteAddress;
+    const { name, juniorSchool, phone, email, programChoice1, programChoice2, questions } = req.body;
+    if (!name || !juniorSchool || !phone || !programChoice1) {
+      apiError(res, 'Nama, Asal Sekolah, No. WhatsApp, dan Pilihan Jurusan wajib diisi.', 'INVALID_INPUT', null, 400);
+      return;
+    }
+    const result = await submitPpdbConsultation({
+      name,
+      juniorSchool,
+      phone,
+      email,
+      programChoice1,
+      programChoice2,
+      questions,
+      ipAddress,
+    });
+    apiSuccess(res, { id: result.id }, 'Konsultasi pra-pendaftaran PPDB berhasil dikirim. Panitia akan segera menghubungi Anda.');
+  } catch (error: any) {
+    apiError(res, error.message, 'SUBMIT_PPDB_FAILED', null, 500);
+  }
+});
+
+// 13. BKK & Mitra Industri
+publicRouter.get('/bkk', async (_req: Request, res: Response) => {
+  try {
+    const data = await getPublicBkkInfo();
+    apiSuccess(res, data, 'Informasi BKK dan Mitra Industri berhasil dimuat.');
+  } catch (error: any) {
+    apiError(res, error.message, 'LOAD_BKK_FAILED', null, 500);
+  }
+});
+
+publicRouter.post('/bkk/tracer', contactLimiter, async (req: Request, res: Response) => {
+  try {
+    const ipAddress = (req.headers['x-forwarded-for'] as string) || req.socket.remoteAddress;
+    const { fullName, graduationYear, programMajor, currentStatus, institutionName, jobTitleOrField, phone, email, notes } = req.body;
+    if (!fullName || !graduationYear || !programMajor || !currentStatus || !phone) {
+      apiError(res, 'Nama, Tahun Lulus, Jurusan, Status, dan Nomor HP/WA wajib diisi.', 'INVALID_INPUT', null, 400);
+      return;
+    }
+    const result = await submitTracerStudy({
+      fullName,
+      graduationYear: Number(graduationYear),
+      programMajor,
+      currentStatus,
+      institutionName,
+      jobTitleOrField,
+      phone,
+      email,
+      notes,
+      ipAddress,
+    });
+    apiSuccess(res, { id: result.id }, 'Terima kasih! Data tracer study alumni berhasil tersimpan.');
+  } catch (error: any) {
+    apiError(res, error.message, 'SUBMIT_TRACER_FAILED', null, 500);
+  }
+});
+
+// 14. Pusat Unduhan Dokumen
+publicRouter.get('/downloads', async (req: Request, res: Response) => {
+  try {
+    const category = req.query.category as string | undefined;
+    const search = req.query.search as string | undefined;
+    const data = await getPublicDownloads(category, search);
+    apiSuccess(res, data, 'Daftar dokumen unduhan publik berhasil dimuat.');
+  } catch (error: any) {
+    apiError(res, error.message, 'LOAD_DOWNLOADS_FAILED', null, 500);
+  }
+});
+
+// 15. Pencarian Global Terpadu (Unified Command Palette Search)
+publicRouter.get('/search', async (req: Request, res: Response) => {
+  try {
+    const query = (req.query.q as string) || '';
+    const results = await searchPublic(query);
+    apiSuccess(res, results, 'Hasil pencarian global berhasil dimuat.');
+  } catch (error: any) {
+    apiError(res, error.message, 'SEARCH_FAILED', null, 500);
+  }
+});
+

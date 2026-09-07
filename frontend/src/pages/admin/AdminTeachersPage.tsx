@@ -5,6 +5,7 @@ import { TeacherItem } from '../../types';
 import { Plus, Edit, Trash2, Users, Loader2 } from 'lucide-react';
 import { Modal } from '../../components/ui/Modal';
 import { toast } from '../../stores/toastStore';
+import { ImageUploadInput } from '../../components/ui/ImageUploadInput';
 
 export const AdminTeachersPage: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -201,27 +202,23 @@ export const AdminTeachersPage: React.FC = () => {
               />
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-xs font-semibold text-gray-700 mb-1">NIP (Opsional)</label>
-              <input
-                type="text"
-                value={nip}
-                onChange={(e) => setNip(e.target.value)}
-                className="w-full px-3 py-2 rounded-xl border border-gray-200 text-xs text-gray-900 focus:outline-none focus:border-forest-700"
-              />
-            </div>
-            <div>
-              <label className="block text-xs font-semibold text-gray-700 mb-1">URL Foto Profil</label>
-              <input
-                type="text"
-                value={photoUrl}
-                onChange={(e) => setPhotoUrl(e.target.value)}
-                placeholder="https://... atau dari Media"
-                className="w-full px-3 py-2 rounded-xl border border-gray-200 text-xs text-gray-900 focus:outline-none focus:border-forest-700"
-              />
-            </div>
+          <div>
+            <label className="block text-xs font-semibold text-gray-700 mb-1">NIP (Opsional)</label>
+            <input
+              type="text"
+              value={nip}
+              onChange={(e) => setNip(e.target.value)}
+              placeholder="Contoh: 19800101 200501 1 001"
+              className="w-full px-3 py-2 rounded-xl border border-gray-200 text-xs text-gray-900 focus:outline-none focus:border-forest-700"
+            />
           </div>
+          <ImageUploadInput
+            label="Foto Profil Guru / Tenaga Kependidikan"
+            value={photoUrl}
+            onChange={setPhotoUrl}
+            aspectRatio="square"
+            helperText="Pilih foto profil dari komputer (format JPG, PNG, WebP maks. 5MB). Disarankan rasio pasfoto/persegi."
+          />
           <div className="pt-2">
             <label className="flex items-center gap-2 text-xs font-semibold text-gray-700 cursor-pointer">
               <input

@@ -25,12 +25,26 @@ export const UserUpdateSchema = z.object({
   isActive: z.boolean().optional(),
 });
 
+// Validasi untuk path berkas lokal (seperti /uploads/...) maupun URL web eksternal
+export const ImagePathSchema = z
+  .string()
+  .refine(
+    (val) =>
+      !val ||
+      val.startsWith('/') ||
+      val.startsWith('http://') ||
+      val.startsWith('https://'),
+    { message: 'URL atau path gambar harus berupa URL valid atau path berkas lokal (/uploads/...)' }
+  )
+  .optional()
+  .nullable();
+
 export const NewsCreateSchema = z.object({
   title: z.string().min(5, 'Judul berita minimal 5 karakter'),
   categoryId: z.string().min(1, 'Kategori wajib dipilih'),
   summary: z.string().min(10, 'Ringkasan minimal 10 karakter'),
   content: z.string().min(20, 'Konten berita minimal 20 karakter'),
-  thumbnailUrl: z.string().url('URL thumbnail harus valid').optional().nullable(),
+  thumbnailUrl: ImagePathSchema,
   status: z.enum(['DRAFT', 'REVIEW', 'PUBLISHED', 'ARCHIVED']).default('DRAFT'),
   isFeatured: z.boolean().default(false),
   metaTitle: z.string().optional().nullable(),
@@ -47,7 +61,7 @@ export const EventCreateSchema = z.object({
   startDate: z.string().datetime('Tanggal mulai harus format ISO valid'),
   endDate: z.string().datetime('Tanggal selesai harus format ISO valid').optional().nullable(),
   status: z.enum(['UPCOMING', 'ONGOING', 'COMPLETED', 'CANCELLED']).default('UPCOMING'),
-  imageUrl: z.string().url().optional().nullable(),
+  imageUrl: ImagePathSchema,
 });
 
 export const EventUpdateSchema = EventCreateSchema.partial();
@@ -71,7 +85,7 @@ export const AchievementCreateSchema = z.object({
   category: z.string().min(2, 'Kategori lomba minimal 2 karakter'),
   year: z.number().int().min(2000).max(2100),
   description: z.string().optional().nullable(),
-  photoUrl: z.string().url().optional().nullable(),
+  photoUrl: ImagePathSchema,
   isFeatured: z.boolean().default(false),
 });
 
@@ -87,7 +101,7 @@ export const ProgramUpdateSchema = z.object({
   facilities: z.string().optional(),
   accentColor: z.string().optional().nullable(),
   iconName: z.string().optional().nullable(),
-  imageUrl: z.string().url().optional().nullable(),
+  imageUrl: ImagePathSchema,
   orderIndex: z.number().int().optional(),
 });
 
@@ -97,7 +111,7 @@ export const TeacherCreateSchema = z.object({
   position: z.string().min(2, 'Jabatan minimal 2 karakter'),
   subject: z.string().optional().nullable(),
   bio: z.string().optional().nullable(),
-  photoUrl: z.string().url().optional().nullable(),
+  photoUrl: ImagePathSchema,
   programId: z.string().uuid().optional().nullable(),
   isStaff: z.boolean().default(false),
   orderIndex: z.number().int().default(0),
@@ -110,7 +124,7 @@ export const FacilityCreateSchema = z.object({
   category: z.string().min(2, 'Kategori fasilitas minimal 2 karakter'),
   description: z.string().min(5, 'Deskripsi fasilitas minimal 5 karakter'),
   location: z.string().optional().nullable(),
-  imageUrl: z.string().url().optional().nullable(),
+  imageUrl: ImagePathSchema,
   orderIndex: z.number().int().default(0),
 });
 
@@ -120,7 +134,7 @@ export const GalleryCreateSchema = z.object({
   title: z.string().min(3, 'Judul album minimal 3 karakter'),
   description: z.string().optional().nullable(),
   category: z.string().default('Kegiatan'),
-  coverUrl: z.string().url().optional().nullable(),
+  coverUrl: ImagePathSchema,
 });
 
 export const GalleryUpdateSchema = GalleryCreateSchema.partial();

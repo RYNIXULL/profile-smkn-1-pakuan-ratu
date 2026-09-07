@@ -5,6 +5,7 @@ import { api } from '../../lib/api';
 import { GalleryItem } from '../../types';
 import { Image as ImageIcon, ArrowRight, Loader2 } from 'lucide-react';
 import { formatDate } from '../../lib/utils';
+import { SkeletonNewsGrid } from '../../components/ui/Skeleton';
 
 export const GalleriesPage: React.FC = () => {
   const { data: galleries, isLoading } = useQuery<GalleryItem[]>({
@@ -20,7 +21,7 @@ export const GalleriesPage: React.FC = () => {
           Dokumentasi Visual
         </span>
         <h1 className="editorial-title text-3xl sm:text-5xl font-bold text-forest-900">
-          Galeri & Album Sekolah
+          Galeri & Album Kegiatan
         </h1>
         <p className="text-xs sm:text-sm text-gray-600 font-light leading-relaxed">
           Kumpulan momen berharga, pembelajaran praktik lahan, gelar karya siswa, dan kegiatan ekstrakurikuler di SMKN 1 Pakuan Ratu.
@@ -28,10 +29,7 @@ export const GalleriesPage: React.FC = () => {
       </div>
 
       {isLoading ? (
-        <div className="flex flex-col items-center justify-center py-20 text-forest-800">
-          <Loader2 className="w-8 h-8 animate-spin text-forest-600" />
-          <p className="text-xs font-medium text-gray-500 mt-3">Memuat album galeri...</p>
-        </div>
+        <SkeletonNewsGrid count={6} />
       ) : !galleries?.length ? (
         <div className="text-center py-20 bg-white rounded-3xl border border-gray-100 p-8">
           <p className="text-base font-bold text-gray-800">Belum ada album galeri.</p>

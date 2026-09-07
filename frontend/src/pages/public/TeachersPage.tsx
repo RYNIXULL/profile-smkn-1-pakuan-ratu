@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { api } from '../../lib/api';
 import { TeacherItem } from '../../types';
 import { Users, GraduationCap, Briefcase, Loader2 } from 'lucide-react';
+import { SkeletonTeacherGrid } from '../../components/ui/Skeleton';
 
 export const TeachersPage: React.FC = () => {
   const [filterStaff, setFilterStaff] = useState<'ALL' | 'GURU' | 'STAFF'>('ALL');
@@ -68,10 +69,7 @@ export const TeachersPage: React.FC = () => {
 
       {/* Grid Teachers */}
       {isLoading ? (
-        <div className="flex flex-col items-center justify-center py-20 text-forest-800">
-          <Loader2 className="w-8 h-8 animate-spin text-forest-600" />
-          <p className="text-xs font-medium text-gray-500 mt-3">Memuat data guru...</p>
-        </div>
+        <SkeletonTeacherGrid count={8} />
       ) : !teachers?.length ? (
         <div className="text-center py-20 bg-white rounded-3xl border border-gray-100 p-8">
           <p className="text-base font-bold text-gray-800">Data belum tersedia.</p>

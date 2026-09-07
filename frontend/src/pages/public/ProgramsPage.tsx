@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { api } from '../../lib/api';
 import { ProgramItem } from '../../types';
 import { Sprout, Beef, TrendingUp, Palette, Wrench, ArrowRight, BookOpen, Loader2 } from 'lucide-react';
+import { SkeletonNewsGrid } from '../../components/ui/Skeleton';
 
 const programIcons: Record<string, React.ReactNode> = {
   pertanian: <Sprout className="w-8 h-8 text-emerald-600" />,
@@ -43,10 +44,7 @@ export const ProgramsPage: React.FC = () => {
       </div>
 
       {isLoading ? (
-        <div className="flex flex-col items-center justify-center py-20 text-forest-800">
-          <Loader2 className="w-8 h-8 animate-spin text-forest-600" />
-          <p className="text-xs font-medium text-gray-500 mt-3">Memuat program keahlian...</p>
-        </div>
+        <SkeletonNewsGrid count={5} />
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {(programs || []).map((prog) => (
