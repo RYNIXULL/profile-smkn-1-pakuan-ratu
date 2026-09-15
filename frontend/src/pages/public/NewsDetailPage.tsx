@@ -8,6 +8,7 @@ import { formatDate } from '../../lib/utils';
 import { toast } from '../../stores/toastStore';
 import { SeoHelmet } from '../../components/ui/SeoHelmet';
 import { Skeleton, SkeletonPageHeader } from '../../components/ui/Skeleton';
+import DOMPurify from 'dompurify';
 
 export const NewsDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -129,7 +130,7 @@ export const NewsDetailPage: React.FC = () => {
       <article className="glass-card p-6 sm:p-12 rounded-3xl border border-forest-100">
         <div
           className="prose prose-slate max-w-none prose-headings:font-serif prose-headings:text-forest-950 prose-a:text-emerald-700 prose-img:rounded-2xl text-sm sm:text-base leading-relaxed text-gray-700 space-y-4"
-          dangerouslySetInnerHTML={{ __html: item.content }}
+          dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(item.content) }}
         />
       </article>
 

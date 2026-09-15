@@ -28,6 +28,25 @@ export const GalleryDetailPage: React.FC = () => {
     return <Navigate to="/galeri" replace />;
   }
 
+  // Gabungkan foto: sertakan coverUrl sebagai foto utama jika belum ada di dalam daftar items
+  const photos = [...(gallery.items || [])];
+  if (gallery.coverUrl && !photos.some((p) => p.media?.url === gallery.coverUrl)) {
+    photos.unshift({
+      id: `cover-${gallery.id}`,
+      caption: gallery.title,
+      orderIndex: -1,
+      media: {
+        id: 'cover',
+        filename: 'cover.webp',
+        originalName: gallery.title,
+        url: gallery.coverUrl,
+        mimeType: 'image/webp',
+        sizeBytes: 0,
+        createdAt: gallery.createdAt,
+      },
+    });
+  }
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
       {/* Back Link */}
@@ -57,13 +76,13 @@ export const GalleryDetailPage: React.FC = () => {
       </div>
 
       {/* Photo Grid */}
-      {!gallery.items?.length ? (
+      {!photos.length ? (
         <div className="text-center py-20 bg-white rounded-3xl border border-gray-100 p-8">
           <p className="text-base font-bold text-gray-800">Belum ada foto dalam album ini.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {gallery.items.map((item) => (
+          {photos.map((item) => (
             <div
               key={item.id}
               onClick={() => setSelectedImage({ url: item.media.url, caption: item.caption })}

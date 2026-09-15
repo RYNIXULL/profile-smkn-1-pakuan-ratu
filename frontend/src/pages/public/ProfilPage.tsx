@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { api } from '../../lib/api';
 import { StaticPage } from '../../types';
 import { BookOpen, Award, Users, Compass, Loader2 } from 'lucide-react';
+import DOMPurify from 'dompurify';
 
 export const ProfilPage: React.FC = () => {
   const { slug } = useParams<{ slug?: string }>();
@@ -77,7 +78,7 @@ export const ProfilPage: React.FC = () => {
             </h2>
             <div
               className="space-y-4 text-sm sm:text-base text-gray-700 leading-relaxed"
-              dangerouslySetInnerHTML={{ __html: page.content }}
+              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(page.content) }}
             />
           </article>
         )}

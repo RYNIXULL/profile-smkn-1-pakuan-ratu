@@ -602,33 +602,104 @@ Tahap perancangan menerjemahkan analisis kebutuhan ke dalam cetak biru arsitektu
 2. **Perancangan Basis Data**: Merancang skema relasional 16 model entitas menggunakan diagram hubungan entitas (*Entity-Relationship Diagram* / ERD) yang mencakup tabel: `users`, `roles`, `permissions`, `role_permissions`, `sessions`, `audit_logs`, `settings`, `media`, `news`, `news_categories`, `news_tags`, `news_tag_map`, `announcements`, `events`, `programs`, `teachers`, `facilities`, `achievements`, `galleries`, `gallery_items`, `pages`, `homepage_sections`, dan `contact_messages`.
 3. **Perancangan Antarmuka Pengguna (UI/UX Wireframe)**: Membuat purwarupa tata letak responsif menggunakan Figma dengan menerapkan tema *Modern Editorial*, aksen *Glassmorphism*, dan palet warna alam (*Forest Green*, *Emerald*, dan *Sand*).
 
-```text
-+-----------------------------------------------------------------------------------+
-|                        USE CASE DIAGRAM SISTEM SMKN 1 PAKUAN RATU                 |
-+-----------------------------------------------------------------------------------+
-|                                                                                   |
-|  [ Pengunjung Publik ] ---> ( Melihat Profil, 5 Jurusan, Fasilitas, Guru )        |
-|                        ---> ( Membaca Berita, Pengumuman, dan Agenda )            |
-|                        ---> ( Melihat Galeri Foto & Prestasi Siswa )              |
-|                        ---> ( Mengirimkan Aspirasi via Formulir Kontak )          |
-|                                                                                   |
-|  [ Staf Sekolah ]      ---> ( Login ke Sistem CMS )                               |
-|                        ---> ( Menyusun Draf Berita Sekolah )                      |
-|                        ---> ( Mengunggah Berkas ke Media Library )                |
-|                                                                                   |
-|  [ Admin / Humas ]     ---> ( Semua Kemampuan Staf Sekolah )                      |
-|                        ---> ( Menerbitkan & Mengedit Berita Resmi )               |
-|                        ---> ( Mengelola Agenda, Pengumuman, Prestasi )            |
-|                        ---> ( Mengelola Album Galeri Foto )                       |
-|                        ---> ( Memperbarui Konten Halaman Profil Sekolah )         |
-|                        ---> ( Membaca & Menandai Pesan Aspirasi Masuk )           |
-|                                                                                   |
-|  [ Super Admin ]       ---> ( Semua Kemampuan Admin / Humas )                     |
-|                        ---> ( Mengelola Akun Pengguna & Pembagian Peran )         |
-|                        ---> ( Mengatur Konfigurasi Global Sekolah )               |
-|                        ---> ( Memantau Audit Trail & Riwayat Aktivitas Sistem )   |
-|                                                                                   |
-+-----------------------------------------------------------------------------------+
+```mermaid
+flowchart TB
+    %% Definisi Aktor
+    subgraph Aktor ["Aktor Pengguna Sistem"]
+        direction TB
+        ActPublik["Pengunjung Publik<br><i>(Calon Siswa, Wali, DUDI, Umum)</i>"]
+        
+        subgraph PengelolaSekolah ["Hirarki Pengelola CMS (RBAC)"]
+            direction TB
+            ActStaff["Staf Sekolah<br><i>(Kontributor Draf)</i>"]
+            ActAdmin["Admin / Tim Humas<br><i>(Editor & Pengelola Konten)</i>"]
+            ActSuper["Super Admin<br><i>(Administrator Sistem)</i>"]
+            
+            ActStaff -.->|Generalisasi / Mewarisi| ActAdmin
+            ActAdmin -.->|Generalisasi / Mewarisi| ActSuper
+        end
+    end
+
+    %% Boundary Sistem
+    subgraph SistemSMK ["Sistem Website Profil & CMS SMKN 1 Pakuan Ratu"]
+        
+        %% Sub-sistem Modul Publik
+        subgraph ModulPublik ["Sub-Sistem 1: Modul Publik (Portal Web)"]
+            direction TB
+            UC_P01(["UC-P01: Melihat Beranda & Profil Sekolah"])
+            UC_P02(["UC-P02: Menjelajahi 5 Jurusan / Program Keahlian"])
+            UC_P03(["UC-P03: Melihat Data Guru & Tenaga Kependidikan"])
+            UC_P04(["UC-P04: Melihat Fasilitas & Sarana Prasarana"])
+            UC_P05(["UC-P05: Membaca Berita & Warta Sekolah"])
+            UC_P06(["UC-P06: Mengunduh / Membaca Pengumuman Resmi"])
+            UC_P07(["UC-P07: Melihat Kalender Agenda & Kegiatan"])
+            UC_P08(["UC-P08: Melihat Galeri Dokumentasi & Video"])
+            UC_P09(["UC-P09: Melihat Riwayat Prestasi Siswa"])
+            UC_P10(["UC-P10: Mengirim Pesan via Formulir Kontak"])
+            UC_P11(["UC-P11: Mengakses Tautan Eksternal PPDB & BKK"])
+        end
+
+        %% Sub-sistem Modul CMS Pengelola
+        subgraph ModulCMS ["Sub-Sistem 2: Modul CMS Pengelola"]
+            direction TB
+            UC_C01(["UC-C01: Login Sistem CMS"])
+            UC_C02(["UC-C02: Autentikasi Kredensial & Sesi JWT"])
+            UC_C03(["UC-C03: Kelola Draf Berita Sekolah"])
+            UC_C04(["UC-C04: Publikasi & Verifikasi Berita"])
+            UC_C05(["UC-C05: Unggah & Kompresi Media Sharp WebP"])
+            UC_C06(["UC-C06: Kelola Agenda & Kalender Kegiatan"])
+            UC_C07(["UC-C07: Kelola Pengumuman Sekolah"])
+            UC_C08(["UC-C08: Kelola Data Prestasi Siswa"])
+            UC_C09(["UC-C09: Kelola Album & Item Galeri"])
+            UC_C10(["UC-C10: Kelola Konten Halaman Profil Statis"])
+            UC_C11(["UC-C11: Kelola Teks & Banner Beranda"])
+            UC_C12(["UC-C12: Membaca & Menandai Inbox Pesan"])
+            UC_C13(["UC-C13: Manajemen Akun Pengguna & Role"])
+            UC_C14(["UC-C14: Konfigurasi Identitas & Metadata Sekolah"])
+            UC_C15(["UC-C15: Pemantauan Audit Log Aktivitas"])
+            UC_C16(["UC-C16: Logout Sesi CMS"])
+        end
+    end
+
+    %% Relasi Asosiasi Modul Publik
+    ActPublik --> UC_P01
+    ActPublik --> UC_P02
+    ActPublik --> UC_P03
+    ActPublik --> UC_P04
+    ActPublik --> UC_P05
+    ActPublik --> UC_P06
+    ActPublik --> UC_P07
+    ActPublik --> UC_P08
+    ActPublik --> UC_P09
+    ActPublik --> UC_P10
+    ActPublik --> UC_P11
+
+    %% Relasi Asosiasi Modul CMS - Staf Sekolah
+    ActStaff --> UC_C01
+    ActStaff --> UC_C03
+    ActStaff --> UC_C05
+    ActStaff --> UC_C16
+
+    %% Relasi Asosiasi Modul CMS - Admin / Tim Humas
+    ActAdmin --> UC_C04
+    ActAdmin --> UC_C06
+    ActAdmin --> UC_C07
+    ActAdmin --> UC_C08
+    ActAdmin --> UC_C09
+    ActAdmin --> UC_C10
+    ActAdmin --> UC_C11
+    ActAdmin --> UC_C12
+
+    %% Relasi Asosiasi Modul CMS - Super Admin
+    ActSuper --> UC_C13
+    ActSuper --> UC_C14
+    ActSuper --> UC_C15
+
+    %% Relasi Include & Extend
+    UC_C01 -.->|"<<include>>"| UC_C02
+    UC_C04 -.->|"<<extend>>"| UC_C03
+    UC_C03 -.->|"<<include>>"| UC_C05
+    UC_C09 -.->|"<<include>>"| UC_C05
 ```
 **Gambar 4. Diagram Use Case Modul Publik dan CMS Pengelola**
 

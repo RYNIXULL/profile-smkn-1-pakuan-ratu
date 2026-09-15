@@ -2,7 +2,7 @@ import { Router, Response } from 'express';
 import { authenticate, AuthenticatedRequest } from '../middleware/auth';
 import { requireAdminOrHumas, requireSuperAdmin } from '../middleware/rbac';
 import { validate } from '../middleware/validate';
-import { sanitizeNewsContent } from '../middleware/sanitize';
+import { sanitizeNewsContent, sanitizePageContent } from '../middleware/sanitize';
 import { multerUpload, processAndSaveImage, handleUploadErrors } from '../middleware/upload';
 import {
   NewsCreateSchema,
@@ -674,7 +674,7 @@ adminRouter.get('/homepage', requireAdminOrHumas, async (_req: AuthenticatedRequ
   }
 });
 
-adminRouter.put('/homepage/:sectionKey', requireAdminOrHumas, async (req: AuthenticatedRequest, res: Response) => {
+adminRouter.put('/homepage/:sectionKey', requireAdminOrHumas, sanitizePageContent, async (req: AuthenticatedRequest, res: Response) => {
   try {
     const { ipAddress, userAgent } = getClientMeta(req);
     const updated = await updateHomepageSection(
@@ -699,7 +699,7 @@ adminRouter.get('/pages', requireAdminOrHumas, async (_req: AuthenticatedRequest
   }
 });
 
-adminRouter.patch('/pages/:id', requireAdminOrHumas, async (req: AuthenticatedRequest, res: Response) => {
+adminRouter.patch('/pages/:id', requireAdminOrHumas, sanitizePageContent, async (req: AuthenticatedRequest, res: Response) => {
   try {
     const { ipAddress, userAgent } = getClientMeta(req);
     const updated = await updatePage(req.params.id, req.body, req.user!.userId, ipAddress, userAgent);

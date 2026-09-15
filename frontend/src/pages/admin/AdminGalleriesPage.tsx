@@ -48,8 +48,9 @@ export const AdminGalleriesPage: React.FC = () => {
         toast.success('Album galeri berhasil diperbarui.');
         setEditingItem(res);
       } else {
-        toast.success('Album galeri baru berhasil dibuat.');
-        closeModal();
+        toast.success('Album berhasil dibuat! Silakan tambahkan foto-foto ke dalam album.');
+        setEditingItem(res);
+        setActiveTab('photos');
       }
     },
     onError: (err: any) => {
@@ -219,26 +220,38 @@ export const AdminGalleriesPage: React.FC = () => {
                       </span>
                     </td>
                     <td className="px-6 py-3 whitespace-nowrap text-gray-500">
-                      {album.items?.length ?? album._count?.items ?? 0} foto
-                    </td>
-                    <td className="px-6 py-3 whitespace-nowrap text-right space-x-1">
                       <button
+                        type="button"
+                        onClick={() => openEditModal(album, 'photos')}
+                        className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-semibold text-[11px] transition-colors cursor-pointer"
+                        title="Klik untuk melihat & menambah foto ke album ini"
+                      >
+                        <ImageIcon className="w-3.5 h-3.5 text-emerald-600" />
+                        <span>{album.items?.length ?? album._count?.items ?? 0} foto</span>
+                      </button>
+                    </td>
+                    <td className="px-6 py-3 whitespace-nowrap text-right space-x-1.5">
+                      <button
+                        type="button"
+                        onClick={() => openEditModal(album, 'photos')}
+                        className="px-2.5 py-1.5 rounded-lg bg-forest-50 hover:bg-forest-100 text-forest-800 font-semibold text-[11px] inline-flex items-center gap-1 transition-colors"
+                        title="Kelola & Tambah Foto ke Album"
+                      >
+                        <Plus className="w-3.5 h-3.5" />
+                        <span>Kelola Foto</span>
+                      </button>
+                      <button
+                        type="button"
                         onClick={() => openEditModal(album, 'info')}
-                        className="p-1.5 rounded-lg text-gray-500 hover:text-forest-800 hover:bg-forest-50 transition-colors"
-                        title="Edit Informasi Album"
+                        className="p-1.5 rounded-lg text-gray-500 hover:text-forest-800 hover:bg-gray-100 transition-colors inline-flex items-center"
+                        title="Edit Informasi Album (Judul, Sampul, dll)"
                       >
                         <Edit className="w-4 h-4" />
                       </button>
                       <button
-                        onClick={() => openEditModal(album, 'photos')}
-                        className="p-1.5 rounded-lg text-gray-500 hover:text-emerald-700 hover:bg-emerald-50 transition-colors"
-                        title="Kelola Foto Album"
-                      >
-                        <ImageIcon className="w-4 h-4" />
-                      </button>
-                      <button
+                        type="button"
                         onClick={() => setDeleteTarget(album)}
-                        className="p-1.5 rounded-lg text-gray-400 hover:text-rose-600 hover:bg-rose-50 transition-colors"
+                        className="p-1.5 rounded-lg text-gray-400 hover:text-rose-600 hover:bg-rose-50 transition-colors inline-flex items-center"
                         title="Hapus Album"
                       >
                         <Trash2 className="w-4 h-4" />

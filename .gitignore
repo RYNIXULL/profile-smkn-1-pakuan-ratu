@@ -40,11 +40,13 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# OS & IDE
+# OS & IDE & Temp
 .DS_Store
 Thumbs.db
 .vscode/
 .idea/
+~$*
+
 
 # Testing
 coverage/

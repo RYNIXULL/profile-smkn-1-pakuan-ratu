@@ -5,9 +5,29 @@ import path from 'path';
 dotenv.config({ path: path.resolve(__dirname, '../../../.env') });
 dotenv.config();
 
+const isProduction = process.env.NODE_ENV === 'production';
+
+// Fail-fast security validation: Prevent booting in production with default/insecure keys
+if (isProduction) {
+  const jwtSecret = process.env.JWT_SECRET;
+  const cookieSecret = process.env.COOKIE_SECRET;
+
+  if (!jwtSecret || jwtSecret.includes('dev-insecure') || jwtSecret.length < 32) {
+    throw new Error(
+      '[CRITICAL SECURITY ERROR] In production, JWT_SECRET must be set to a strong random key (min 32 chars) via environment variables.'
+    );
+  }
+
+  if (!cookieSecret || cookieSecret.includes('dev-insecure') || cookieSecret.length < 32) {
+    throw new Error(
+      '[CRITICAL SECURITY ERROR] In production, COOKIE_SECRET must be set to a strong random key (min 32 chars) via environment variables.'
+    );
+  }
+}
+
 export const config = {
   env: process.env.NODE_ENV || 'development',
-  isProduction: process.env.NODE_ENV === 'production',
+  isProduction,
   port: parseInt(process.env.PORT || '5000', 10),
   databaseUrl: process.env.DATABASE_URL || 'mysql://root:password@localhost:3306/smkn1pakuanratu',
   
